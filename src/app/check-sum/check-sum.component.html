@@ -1,0 +1,28 @@
+<h1>Auto Refractometer Data</h1>
+
+<div>
+    <label for="portName">Port:</label>
+    <input type="text" id="portName" [(ngModel)]="portName">
+</div>
+
+<div>
+    <label for="baudRate">Baud Rate:</label>
+    <input type="number" id="baudRate" [(ngModel)]="baudRate">
+</div>
+
+<div>
+    <label for="xmlFile">XML File:</label>
+    <input type="file" id="xmlFile" (change)="onFileSelected($event)">
+</div>
+
+<button (click)="connect()" [disabled]="isConnected">Connect</button>
+<button (click)="disconnect()" [disabled]="!isConnected">Disconnect</button>
+<button (click)="uploadXML()" [disabled]="!xmlFile">Upload XML</button>
+<div *ngIf="errorMessage">
+    <span style="color: red;">{{ errorMessage }}</span>
+</div>
+
+<div *ngIf="dataReceived">
+    <h2>Received Data:</h2>
+    <pre>{{ dataReceived }}</pre>
+</div>

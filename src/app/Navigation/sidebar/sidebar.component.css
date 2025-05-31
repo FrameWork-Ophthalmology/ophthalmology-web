@@ -1,0 +1,25 @@
+.navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.sidebar .sidebar-nav {
+    overflow-y: auto;
+    height: calc(100vh - 51px);
+    padding-bottom: 15px;
+    overflow-x: hidden;
+    border-left: 1px solid #b2b2b2;
+}
+
+.ttspan-fill {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.input-group-btn:last-child>.btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}

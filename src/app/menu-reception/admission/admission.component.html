@@ -1,0 +1,693 @@
+<body class="card">
+
+    <header>
+
+        <label class="header_name">{{'Clinique' | i18n:i18nService.currentLanguage }} </label>
+        <button class="close-button btn btn-default" (click)="closeThisComponent()">X</button>
+    </header>
+    <section id="main-container">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <!-- <div class="panel-heading">
+                        <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline
+                    </div>
+                     -->
+                    <div class="panel-body">
+                        <p-table [columns]="cols" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+
+                            <ng-template pTemplate="caption" class="col-md-12">
+                                <div>
+                                    <div class="flex-row-start FloatRight">
+                                        <p-tabMenu [model]="items" [(activeItem)]="activeItem" />
+
+                                    </div>
+                                    <div class="flex-row-start flex-8 FloatLeft">
+                                        <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="OpenModalRercherPatient('RercherPatient')">
+                                            <div class="bouton_style-2"> {{'Add' | i18n:i18nService.currentLanguage}}
+                                            </div>
+                                            <i class="fa-solid fa-plus add-icon"></i>
+                                        </button>
+                                        <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="OpenModalRercherPatient('edit')">
+                                            <div class="bouton_style-2">{{'Modifier' |
+                                                i18n:i18nService.currentLanguage}}</div>
+                                            <i class="fa-solid fa-pen modif-icon"></i>
+                                        </button>
+                                        <button type="button" class="Bouton-add-new2 btn  btn-default " data-original-title="Delete" data-toggle="modal" data-target="#ModalDelete" (click)="OpenModalRercherPatient('Delete')">
+                                            <div class="bouton_style-2">{{'Delete' | i18n:i18nService.currentLanguage}}
+                                            </div>
+                                            <i class="fa-solid fa-trash-can delete-icon"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="colgroup" let-col>
+                                <colgroup>
+                                    <col *ngFor="let col of col" [style.width]="col.width">
+                                </colgroup>
+                            </ng-template>
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                        {{ col.header }}
+                                        <p-sortIcon [field]="col.field" />
+                                    </th>
+                                </tr>
+                                <tr class="filter-row">
+                                    <th *ngFor="let col of columns">
+                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                <tr>
+                                    <td *ngFor="let col of columns">
+                                        {{ rowData[col.field] }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+    </section>
+    <footer>
+
+    </footer>
+</body>
+
+
+
+<p-dialog id="ModalRercherPatient" header="Header" [scrollLeft]="true" #modalRecherchePatient [closeOnEscape]="true" [(visible)]="visibleModalRecherPatient" data-backdrop="false" [modal]="true" styleClass="ModalAddRercherPatient" [draggable]="false">
+    <ng-template pTemplate="header">
+
+
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default BtnCloseAdmissionPatient" :closable="true" data-dismiss="modal" (click)="CloseModalRecherPatient()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                {{'Close' | i18n:i18nService.currentLanguage}}
+            </button>
+        </div>
+    </ng-template>
+
+    <div class="modal-body">
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-row-start flex-12">
+                <p-panel class="flex-12" [header]="HeaderPatientSelected">
+
+                    <div class="flex-row-start flex-12">
+                        <div class="flex-row-start flex-4">
+                            <label class="control-label  flex-4" style="width: 25%; "> {{'CodePatient' |
+                                i18n:i18nService.currentLanguage}} : </label>
+                            <div class="control-input flex-5-45 ">
+                                <input disabled="disabled" readonly id="CodePatientSelected" #codePatientSelectedInput maxlength="10" name="CodePatientSelected" type="text" class=" form-control-dev input-xs" [(ngModel)]="codePatientSelected">
+
+                            </div>
+                        </div>
+                        <div class="flex-row-start flex-4">
+                            <label class="control-label  flex-4" style="width: 25%; "> {{'NomFullAr' |
+                                i18n:i18nService.currentLanguage}} : </label>
+                            <div class="control-input flex-5-45 ">
+                                <input disabled="disabled" readonly id="NomFullArSelected" #NomFullArSelectedInput maxlength="10" name="NomFullArSelected" type="text" class=" form-control-dev input-xs" [(ngModel)]="nomFullArSelected">
+
+                            </div>
+                        </div>
+
+                        <div class="flex-row-start flex-4">
+
+                        </div>
+
+                    </div>
+                </p-panel>
+
+            </fieldset>
+
+        </div>
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-6">
+                <p-panel [header]="HeaderAddPatient">
+                    <div class=" flex-row-start flex-12">
+                        <div class="flex-row-start flex-6">
+                            <label class="control-label  flex-4" style="width: 25%; "> {{'CodePatient' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-5-45 " style="max-width: 100px;">
+                                <input id="NewCodePatient" #codePatientNewInput maxlength="10" name="NewCodePatient" type="text" class=" form-control-dev input-xs" required [(ngModel)]="codePatientNew">
+
+                            </div>
+                        </div>
+                        <div class=" flex-row-start  flex-6">
+
+                        </div>
+
+                    </div>
+
+                    <div class=" flex-row-start flex-12">
+                        <div class="flex-row-start flex-6">
+                            <label class="control-label  flex-5" style="width: 25%; "> {{'NomFullAr' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-8 ">
+                                <input id="NewNomFullAr" #NomFullArNewInput maxlength="200" name="NewNomFullAr" type="text" class=" form-control-dev input-xs" required [(ngModel)]="newNomFullAr">
+
+                            </div>
+                        </div>
+                        <div class=" flex-row-start  flex-6">
+                            <label class="control-label  flex-5" style="width: 25%; "> {{'NomFullLt' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-8 ">
+                                <input id="newNomFullLt" #newNomFullLtNewInput maxlength="200" name="newNomFullLt" type="text" class=" form-control-dev input-xs" required [(ngModel)]="newNomFullLt">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class=" flex-row-start flex-12">
+                        <div class="flex-row-start flex-6">
+                            <label class="control-label  flex-5" style="width: 25%; "> {{'Age' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-8 ">
+                                <input id="NewAge" #NewAgeNewInput maxlength="3" name="NewAge" type="number" class=" form-control-dev input-xs" required [(ngModel)]="newAge">
+
+                            </div>
+                        </div>
+
+                        <div class="flex-row-start flex-6">
+                            <label class="control-label  flex-5" style="width: 25%; "> {{'DateNaiss' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-8 " style="align-self: center;">
+                                <p-calendar (keyup.enter)="transformDateFormatDateNaissance()" (onInput)="formatInputNewDateNaissance($event)" (onChange)="transformDateFormatDateNaissance()" (onSelect)="transformDateFormatDateNaissance()" [(ngModel)]="dateNaissance" [showButtonBar]="true"
+                                    appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class=" flex-row-start flex-12">
+
+                        <div class=" flex-row-start  flex-6">
+                            <label class="control-label  flex-5" style="width: 25%; "> {{'Gender' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-8 dropDownStyle">
+                                <p-dropdown name="newGenderModel" [filter]="true" appendTo="body" [options]="newGender" [(ngModel)]="selectedNewGender" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #newGenderModel="ngModel">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                        <div class=" flex-row-start  flex-6">
+                            <label class="control-label  flex-5" style="width: 25%; "> {{'NumTel' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-8 ">
+                                <input id="numTelNew" #numTelNewInput maxlength="12" name="NewAge" type="number" class=" form-control-dev input-xs" required [(ngModel)]="numTelNew">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class=" flex-row-start flex-12">
+
+                        <label class="control-label  flex-2"> {{'RefDoctor' |
+                            i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-10 " style="align-self: center;">
+                            <input id="RefDoctorNew" #RefDoctorNewInput maxlength="100" name="RefDoctorNew" type="text" class=" form-control-dev input-xs" required [(ngModel)]="refDoctorNew">
+
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class=" flex-row-start flex-12">
+                        <div class=" flex-row-start  flex-2">
+                            <label class="control-label  "> {{'VisiteDate' |
+                                i18n:i18nService.currentLanguage}} : </label>
+
+                        </div>
+                        <div class=" flex-row-start  flex-10">
+                            <p-table [value]="dataVisite" dataKey="code" [tableStyle]="{ 'min-width': '50rem' }">
+                                <!-- <ng-template pTemplate="caption" class="col-md-12">
+                                    <label class="control-label  flex-5" style="width: 25%; "> {{'VisiteDate' |
+                                        i18n:i18nService.currentLanguage}} : <i
+                                            class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                                </ng-template> -->
+
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:35%">
+                                            {{'VisiteDate' | i18n:i18nService.currentLanguage}}
+                                        </th>
+                                        <th style="width:35%">
+                                            {{'TypeVisite' | i18n:i18nService.currentLanguage}}
+                                        </th>
+                                        <th style="width:25%">
+
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-dateVisites let-editing="editing" let-ri="rowIndex">
+                                    <tr>
+                                        <td [pEditableColumn]="dateVisites.dateVisite" pEditableColumnField="dateVisite">
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+
+                                                    <p-calendar (keyup.enter)="transformDateFormatDateVisite()" (onInput)="formatInputNewDateVisite($event)" (onChange)="transformDateFormatDateVisite()" (onSelect)="transformDateFormatDateVisite()" [(ngModel)]="dateVisites.dateVisite" [showButtonBar]="true"
+                                                        appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+
+
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{ dateVisites.dateVisite | date:'yyyy-MM-dd' }}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td [pEditableColumn]="dateVisites.typeVisite" pEditableColumnField="typeVisite">
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+
+                                                    <p-dropdown [options]="newTypeVisite" appendTo="body" [(ngModel)]="dataVisite[0].typeVisite" [style]="{'width':'100%'}" (onChange)="addNewRow()" />
+
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{ dateVisites.typeVisite }}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td style="text-align-last: center;">
+
+                                            <button style="margin-left:5px" pButton type="button" pDeleteEditableRow icon="pi pi-backward " class="p-button-item-eye " data-original-title="DetailsAdmission" data-toggle="modal" data-target="#ModalDetailsAdmission" (click)="openModal('selectPatientAdded',ri) "></button>
+
+                                            <button style="margin-right:5px" pButton type="button" pDeleteEditableRow icon="pi pi-eye" class="p-button-item-eye " data-original-title="DetailsAdmission" data-toggle="modal" data-target="#ModalDetailsAdmission" (click)="openModal('dateVisites',ri) "></button>
+
+                                            <button style="margin-right:5px" *ngIf="ri !== 0" pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="p-button-item " (click)="removeRow(ri) "></button>
+
+                                        </td>
+
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+
+
+                    </div>
+
+
+                </p-panel>
+
+            </fieldset>
+            <fieldset class="flex-6">
+                <p-panel [header]="HeaderListPatient">
+                    <p-table [value]="dataPatient" [columns]="columnTabsListPatient" dataKey="codePatient" [tableStyle]="{ 'min-width': '50rem' }" selectionMode="single" (onRowUnselect)="onRowUnselectFromTabsRecherPatient($event)" [(selection)]="SelectedPatientFromList"
+                        (onRowSelect)="onRowSelectFromTabsRecherchePatient($event)">
+
+                        <ng-template pTemplate="colgroup" let-col>
+                            <colgroup>
+                                <col *ngFor="let col of col" [style.width]="col.width">
+                            </colgroup>
+                        </ng-template>
+                        <ng-template pTemplate="header" let-col>
+                            <tr>
+                                <th *ngFor="let col of col" pResizableColumn>
+                                    <span>{{col.header}}</span>
+                                </th>
+                            </tr>
+                            <tr class="filter-row">
+                                <th *ngFor="let col of col">
+                                    <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-patient let-ri="rowIndex">
+                            <tr [pSelectableRow]="patient">
+                                <td> {{ patient.codePatient }} </td>
+                                <td> {{ patient.nomFullAr }} </td>
+                                <!-- <td> {{ patient.nomFullLt }} </td> -->
+                                <td> {{ patient.dateNaissance }} </td>
+                                <td> {{ patient.numTel }} </td>
+                                <td> {{ patient.diagnosis }} </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-panel>
+            </fieldset>
+
+        </div>
+
+
+
+
+    </div>
+
+</p-dialog>
+
+
+
+
+<!-- modal add admission-->
+<p-dialog id="ModalAdmssion" data-backdrop="false" header="Header" [(visible)]="visibleModalAdmission" styleClass="ModalAddRercherPatient" [modal]="true" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default BtnCloseAdmissionPatient" :closable="true" data-dismiss="modal" (click)="CloseModalAddAdmission()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                {{'Close' | i18n:i18nService.currentLanguage}}
+            </button>
+        </div>
+    </ng-template>
+    <div class="modal-body">
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-row-start flex-12">
+                <p-panel class="flex-12" [header]="HeaderPatientSelected">
+                    <div class="flex-row-start flex-12">
+                        <div class="flex-row-start flex-4">
+                            <label class="control-label  flex-4" style="width: 25%; "> {{'CodePatient' |
+                                i18n:i18nService.currentLanguage}} : </label>
+                            <div class="control-input flex-5-45 ">
+                                <input disabled="disabled" readonly id="CodePatientSelected" #codePatientSelectedInput maxlength="10" name="CodePatientSelected" type="text" class=" form-control-dev input-xs" [(ngModel)]="codePatientSelected">
+                            </div>
+                        </div>
+                        <div class="flex-row-start flex-4">
+                            <label class="control-label  flex-4" style="width: 25%; "> {{'NomFullAr' |
+                                i18n:i18nService.currentLanguage}} : </label>
+                            <div class="control-input flex-5-45 ">
+                                <input disabled="disabled" readonly id="NomFullArSelected" #NomFullArSelectedInput maxlength="10" name="NomFullArSelected" type="text" class=" form-control-dev input-xs" [(ngModel)]="nomFullArSelected">
+                            </div>
+                        </div>
+                        <div class="flex-row-start flex-4">
+                        </div>
+                    </div>
+                </p-panel>
+            </fieldset>
+
+        </div>
+        <br>
+
+        <div class="flex-row-start  flex-12">
+            <fieldset class="flex-12">
+                <br>
+                <div class="flex-row-start flex-12">
+                    <p-tabView [style]="{'width':'1200px'}">
+                        <p-tabPanel [header]="LabelHistory">
+
+                            <div class="flex-row-start flex-12">
+                                <div class="flex-row-start flex-6">
+                                    <label class="control-label flex-4"> {{'VisiteDate' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-5-45 ">
+                                        <!-- <input type="text" id="ProbMedicaux" maxlength="200" name="ProbMedicaux" class=" form-control-dev input-xs" #ProbMedicauxInput required [(ngModel)]="ProbMedicaux"> -->
+
+                                        <p-calendar disabled="disabled" readonly (keyup.enter)="transformDateFormatDateVisite()" (onInput)="formatInputNewDateVisite($event)" (onChange)="transformDateFormatDateVisite()" (onSelect)="transformDateFormatDateVisite()" *ngIf="selectedVisiteRowIndex !== null"
+                                            [(ngModel)]="dataVisite[selectedVisiteRowIndex].dateVisite" [showButtonBar]="true" appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+
+                                    </div>
+                                </div>
+                                <div class="flex-row-start flex-6">
+                                    <label class="control-label flex-4"> {{'TypeVisite' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-5-45 ">
+                                        <p-dropdown [disabled]="true" readonly *ngIf="selectedVisiteRowIndex !== null" [options]="newTypeVisite" [(ngModel)]="dataVisite[selectedVisiteRowIndex].typeVisite" [style]="{'width':'100%'}"></p-dropdown>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="flex-row-start flex-12">
+                                <label class="control-label flex-14"> {{'ReasonVisite' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <div class="control-input flex-10 ">
+                                    <input type="text" id="ReasonVisite" maxlength="200" name="ReasonVisite" class=" form-control-dev input-xs" #ReasonVisiteInput required [(ngModel)]="ReasonVisite">
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="flex-row-start flex-12">
+                                <label class="control-label flex-14"> {{'PastMedicalHistory' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <div class="control-input flex-10">
+                                    <input type="text" id="PastMedicalHistory" maxlength="200" name="PastMedicalHistory" class=" form-control-dev input-xs" #PastMedicalHistoryInput required [(ngModel)]="PastMedicalHistory">
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="flex-row-start flex-12">
+                                <label class="control-label flex-14"> {{'PriorSurgery' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <div class="control-input flex-10 ">
+                                    <input type="text" id="PriorSurgery" maxlength="200" name="PriorSurgery" class=" form-control-dev input-xs" #PriorSurgeryInput required [(ngModel)]="PriorSurgery">
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="flex-row-start flex-12">
+                                <label class="control-label flex-14"> {{'CurrentMedications' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <div class="control-input flex-10 ">
+                                    <input type="text" id="CurrentMedications" maxlength="200" name="CurrentMedications" class=" form-control-dev input-xs" #CurrentMedicationsInput required [(ngModel)]="CurrentMedications">
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="flex-row-start flex-12">
+                                <label class="control-label flex-14"> {{'SystemicDisease' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <div class="control-input flex-10 ">
+                                    <input type="text" id="SystemicDisease" maxlength="200" name="SystemicDisease" class=" form-control-dev input-xs" #SystemicDiseaseInput required [(ngModel)]="SystemicDisease">
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="flex-row-start flex-12">
+                                <label class="control-label flex-14"> {{'AllergyHistory' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <div class="control-input flex-10 ">
+                                    <input type="text" id="AllergyHistory" maxlength="200" name="AllergyHistory" class=" form-control-dev input-xs" #AllergyHistoryInput required [(ngModel)]="AllergyHistory">
+                                </div>
+
+                            </div>
+
+
+
+                        </p-tabPanel>
+
+
+                        <p-tabPanel [header]="LabelRefraction">
+
+                            <div class="flex-row-start flex-12">
+                                <div class="flex-row-start flex-6">
+                                    <label class="control-label flex-4"> {{'RefractiveAid' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-5-45 ">
+                                        <p-dropdown appendTo="body" [showClear]="true" [filter]="true" [options]="ListRefractiveAid" [(ngModel)]="RefractiveAid" [style]="{'width':'100%'}"></p-dropdown>
+
+
+                                    </div>
+                                </div>
+                                <div class="flex-row-start flex-6">
+                                    <label class="control-label flex-4"> {{'UsingSince' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-5-45 ">
+                                        <input type="text" id="UsingSince" maxlength="200" name="UsingSince" class=" form-control-dev input-xs" #UsingSinceInput required [(ngModel)]="usingSince">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <br> -->
+                            <div class="flex-row-start flex-12">
+                                <div class="flex-row-start flex-5">
+                                    <label class="control-label flex-4"> {{'RightEye' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-6">
+                                        <input type="text" id="RightEyeRef" maxlength="200" name="RightEyeRef" class=" form-control-dev input-xs" #RightEyeRefInput required [(ngModel)]="RightEyeRef">
+
+
+                                    </div>
+                                </div>
+                                <div class="flex-row-start flex-3">
+                                    <label class="control-label flex-4"> {{'VisionRE' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-7">
+                                        <input type="text" id="VisionRE" maxlength="200" name="VisionRE" class=" form-control-dev input-xs" #VisionREInput required [(ngModel)]="VisionRE">
+
+                                    </div>
+                                </div>
+                                <div class="flex-row-start flex-3">
+                                    <label class="control-label flex-5"> {{'NearVisionRE' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-6">
+                                        <input type="text" id="NearVisionRE" maxlength="200" name="NearVisionRE" class=" form-control-dev input-xs" #NearVisionREInput required [(ngModel)]="NearVisionRE">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-row-start flex-12">
+                                <div class="flex-row-start flex-5">
+                                    <label class="control-label flex-4"> {{'LeftEye' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-6">
+                                        <input type="text" id="LeftEyeRef" maxlength="200" name="LeftEyeRef" class=" form-control-dev input-xs" #LeftEyeRefInput required [(ngModel)]="LeftEyeRef">
+
+
+                                    </div>
+                                </div>
+                                <div class="flex-row-start flex-3">
+                                    <label class="control-label flex-4"> {{'VisionLE' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-7">
+                                        <input type="text" id="VisionLE" maxlength="200" name="VisionLE" class=" form-control-dev input-xs" #VisionLEInput required [(ngModel)]="VisionLE">
+
+                                    </div>
+                                </div>
+                                <div class="flex-row-start flex-3">
+                                    <label class="control-label flex-5"> {{'NearVisionLE' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-6">
+                                        <input type="text" id="NearVisionLE" maxlength="200" name="NearVisionLE" class=" form-control-dev input-xs" #NearVisionLEInput required [(ngModel)]="NearVisionLE">
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="flex-row-start flex-12">
+                                <div class="flex-row-start flex-6">
+                                    <label class="control-label flex-4"> {{'UCVARE' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-6">
+                                        <input type="text" id="UCVARE" maxlength="200" name="UCVARE" class=" form-control-dev input-xs" #UCVAREInput required [(ngModel)]="uCVARE">
+
+
+                                    </div>
+
+                                </div>
+                                <div class="flex-row-start flex-6">
+                                    <label class="control-label flex-4"> {{'PINHOLERE' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-6">
+                                        <input type="text" id="PINHOLERE" maxlength="200" name="PINHOLERE" class=" form-control-dev input-xs" #PINHOLEREInput required [(ngModel)]="pINHOLERE">
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="flex-row-start flex-12">
+                                <div class="flex-row-start flex-6">
+                                    <label class="control-label flex-4"> {{'UCVALE' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-6">
+                                        <input type="text" id="UCVALE" maxlength="200" name="UCVALE" class=" form-control-dev input-xs" #UCVALEInput required [(ngModel)]="uCVALE">
+
+
+                                    </div>
+
+                                </div>
+                                <div class="flex-row-start flex-6">
+                                    <label class="control-label flex-4"> {{'PINHOLELE' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-6">
+                                        <input type="text" id="PINHOLELE" maxlength="200" name="PINHOLELE" class=" form-control-dev input-xs" #PINHOLELEInput required [(ngModel)]="pINHOLELE">
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="flex-row-start flex-12">
+                                <div class="flex-row-start flex-6">
+                                    <label class="control-label flex-4"> {{'RefractionRE' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-6">
+                                        <input type="text" id="RefractionRE" maxlength="200" name="RefractionRE" class=" form-control-dev input-xs" #RefractionREInput required [(ngModel)]="RefractionRE">
+
+
+                                    </div>
+
+                                </div>
+                                <div class="flex-row-start flex-6">
+                                    <label class="control-label flex-4"> {{'RefractionLE' |
+                                        i18n:i18nService.currentLanguage}} : </label>
+
+                                    <div class="control-input flex-6">
+                                        <input type="text" id="RefractionLE" maxlength="200" name="RefractionLE" class=" form-control-dev input-xs" #RefractionLEInput required [(ngModel)]="RefractionLE">
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+
+
+
+                        </p-tabPanel>
+
+
+
+                    </p-tabView>
+                </div>
+
+
+
+
+
+            </fieldset>
+
+        </div>
+
+    </div>
+</p-dialog>

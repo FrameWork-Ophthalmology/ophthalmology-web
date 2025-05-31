@@ -1,0 +1,1266 @@
+<body class="card">
+
+    <header>
+
+        <label class="header_name">{{'Clinique' | i18n:i18nService.currentLanguage }} </label>
+        <button class="close-button btn btn-default" (click)="closeThisComponent()">X</button>
+    </header>
+    <section id="main-container">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <!-- <div class="panel-heading">
+                        <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline
+                    </div>
+                     -->
+                    <div class="panel-body">
+                        <p-table [columns]="cols" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+
+                            <ng-template pTemplate="caption" class="col-md-12">
+                                <div>
+                                    <div class="flex-row-start FloatRight">
+                                        <p-tabMenu [model]="items" [(activeItem)]="activeItem" />
+
+                                    </div>
+                                    <div class="flex-row-start flex-8 FloatLeft">
+                                        <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="OpenModalRercherPatient('RercherPatient')">
+                                            <div class="bouton_style-2"> {{'Add' | i18n:i18nService.currentLanguage}}
+                                            </div>
+                                            <i class="fa-solid fa-plus add-icon"></i>
+                                        </button>
+                                        <button data-backdrop="false" type="button" class="Bouton-add-new1 btn  btn-default " data-original-title="Add" data-toggle="modal" data-target="#Modal" (click)="OpenModalRercherPatient('edit')">
+                                            <div class="bouton_style-2">{{'Modifier' |
+                                                i18n:i18nService.currentLanguage}}</div>
+                                            <i class="fa-solid fa-pen modif-icon"></i>
+                                        </button>
+                                        <button type="button" class="Bouton-add-new2 btn  btn-default " data-original-title="Delete" data-toggle="modal" data-target="#ModalDelete" (click)="OpenModalRercherPatient('Delete')">
+                                            <div class="bouton_style-2">{{'Delete' | i18n:i18nService.currentLanguage}}
+                                            </div>
+                                            <i class="fa-solid fa-trash-can delete-icon"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="colgroup" let-col>
+                                <colgroup>
+                                    <col *ngFor="let col of col" [style.width]="col.width">
+                                </colgroup>
+                            </ng-template>
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                        {{ col.header }}
+                                        <p-sortIcon [field]="col.field" />
+                                    </th>
+                                </tr>
+                                <tr class="filter-row">
+                                    <th *ngFor="let col of columns">
+                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                <tr>
+                                    <td *ngFor="let col of columns">
+                                        {{ rowData[col.field] }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+    </section>
+    <!-- <aside>aside</aside> -->
+    <footer>
+
+    </footer>
+</body>
+
+
+
+
+
+
+
+
+
+<p-dialog id="ModalRercherPatient" header="Header" [scrollLeft]="true" #modalRecherchePatient [closeOnEscape]="true" [(visible)]="visibleModalRecherPatient" data-backdrop="false" [modal]="true" styleClass="ModalAddRercherPatient" [draggable]="false">
+    <ng-template pTemplate="header">
+
+
+
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default BtnCloseAdmissionPatient" :closable="true" data-dismiss="modal" (click)="CloseModalRecherPatient()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                {{'Close' | i18n:i18nService.currentLanguage}}
+            </button>
+        </div>
+    </ng-template>
+
+    <div class="modal-body">
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-12">
+                <p-panel [header]="HeaderRecherchePatient">
+                    <div class="flex-row-start flex-12">
+                        <section class="flex-row-start flex-4">
+                            <label class="control-label  flex-4" style="width: 25%; "> {{'NomFullAr' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-60">
+                                <input (keyup.enter)="dt2.filterGlobal($any($event.target).value, 'contains')" id="NomPatientFullAr" maxlength="10" name="NomPatientFullAr" [(ngModel)]="NomPatientFullArRecherche" type="text" class=" form-control-dev input-xs">
+
+                            </div>
+                        </section>
+                        <section class="flex-row-start flex-4 ">
+                            <label class="control-label flex-4"> {{'DateNaiss' |
+                                i18n:i18nService.currentLanguage}} :<i
+                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                            <div class="control-input flex-60" style="padding: 0px ; display: flex;">
+
+                                <p-calendar (keyup.enter)="dt2.filterGlobal($any($event.target).value, 'contains') ; transformDateFormatRecherche()" (onInput)="formatInputRecherche($event)" (onChange)="transformDateFormatRecherche()" (onSelect)="transformDateFormatRecherche()" [ngStyle]="{'width':'100%' , 'margin-right': '3px'}"
+                                    [showButtonBar]="true" [(ngModel)]="dateNaissanceRecherche" [iconDisplay]="'input'" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay" />
+
+                            </div>
+
+
+
+                        </section>
+                        <section class="flex-row-start flex-4">
+
+                        </section>
+
+                        <section class="flex-row-start flex-2">
+                            <button type="button" class="Bouton_new3Rechercher btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)="ReinitialiserSearch()">
+
+                                <i class="fa-solid fa-rotate IconReinitialiser"></i>
+                                <div class="bouton_style-2"> {{'Reinitialiser' |
+                                    i18n:i18nService.currentLanguage}} </div>
+                            </button>
+                        </section>
+                    </div>
+                    <div class="flex-row-start flex-12">
+                        <section class="flex-row-start flex-4">
+                            <label class="control-label  flex-4" style="width: 25%; "> {{'NomFullLt' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-60 ">
+                                <input (keyup.enter)="dt2.filterGlobal($any($event.target).value, 'contains')" id="NomPatientFullLt" maxlength="10" name="NomPatientFullLt" [(ngModel)]="NomPatientFullLtRecherche" type="text" class="form-control-dev input-xs" required="true">
+                            </div>
+                        </section>
+                        <section class="flex-row-start flex-4 ">
+                            <label class="control-label  flex-4" style="width: 25%; "> {{'NumTel' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-60 ">
+                                <input (keyup.enter)="dt2.filterGlobal($any($event.target).value, 'contains')" id="NumTel" [(ngModel)]="TelPatientRecherche" maxlength="10" name="NumTel" type="number" class="form-control-dev input-xs" required="true">
+
+                            </div>
+                        </section>
+                        <section class="flex-row-start flex-4 ">
+
+                        </section>
+                        <section class="flex-row-start flex-2 ">
+                            <button type="button" class="Bouton_new3Rechercher btn btn-labeled btn-default " data-original-title="Edit" data-toggle="modal" data-target="#Modal" (click)=" dt2.filterGlobal($any($event.target).value, 'contains')">
+
+                                <i class="fa-solid fa-magnifying-glass IconSearch"></i>
+                                <div class="bouton_style-2"> {{'Search' |
+                                    i18n:i18nService.currentLanguage}} </div>
+                            </button>
+                        </section>
+                    </div>
+                </p-panel>
+            </fieldset>
+        </div>
+        <p-panel [header]="HeaderListPatient">
+            <div class="flex-row-start flex-12">
+                <fieldset class="flex-12">
+                    <div class="flex-row-start flex-12">
+                        <section class="flex-row-start">
+                            <p-table [paginator]="true" [rows]="20" [rowsPerPageOptions]="[20, 40,80,100]" [showCurrentPageReport]="true" currentPageReportTemplate="{{'Page' | i18n:i18nService.currentLanguage}} {first} {{'To' | i18n:i18nService.currentLanguage}} {last} {{'of' | i18n:i18nService.currentLanguage}} {totalRecords} {{'entiers' | i18n:i18nService.currentLanguage}}"
+                                #dt2 [columns]="columnTabsListPatient" [value]="ListPatientTried" selectionMode="single" class="fixed-header-table" [metaKeySelection]="false" (onRowUnselect)="onRowUnselectFromTabsRecherPatient($event)" [(selection)]="SelectedPatientFromList"
+                                (onRowSelect)="onRowSelectFromTabsRecherchePatient($event)" dataKey="code" scrollHeight="300px" [tableStyle]="{'min-width': '1082px', 'width': '100%' , 'padding': '1px 1px 1px 1px'}">
+                                <ng-template pTemplate="header" let-col>
+                                    <tr>
+                                        <th *ngFor="let col of col ; let i = index" pResizableColumn>
+                                            <span>
+                                                {{col.header}}
+                                            </span>
+                                        </th>
+                                    </tr>
+                                    <tr style="padding: 0px !important; height: 10px !important;" class="filter-row">
+                                        <th *ngFor="let col of col">
+                                            <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter By"></p-columnFilter>
+                                        </th>
+                                    </tr>
+
+
+                                </ng-template>
+                                <ng-template pTemplate="body" let-domaine>
+                                    <tr [pSelectableRow]="domaine" [pSelectableRowDisabled]="AraiaDis">
+
+                                        <td style="font-size: 16px !important;">
+                                            {{domaine.codeSaisie}}</td>
+
+                                        <td>{{domaine.nomCompltAr}}</td>
+                                        <td>{{domaine.nomCompltLt}}</td>
+                                        <td> {{domaine.numTel}}</td>
+                                        <td style="font-size: 16px !important;">
+                                            {{domaine.dateNaissance | date : "dd/MM/yyyy" }}</td>
+                                    </tr>
+                                </ng-template>
+
+
+
+                            </p-table>
+                        </section>
+                    </div>
+                    <div class="flex-row-start flex-12 FloatLeft">
+                        <button type="button" class="Bouton_new3Rechercher btn btn-labeled btn-default " data-original-title="AddNewPatient" data-toggle="modal" data-target="#ModalAddPatient" (click)="onOpenModalAdmission('addNewPatient')">
+
+
+                            <i class="fa-solid fa-user-plus IconSave"></i>
+
+                            <div class="bouton_style-2"> {{'Add' |
+                                i18n:i18nService.currentLanguage}} </div>
+                        </button>
+                        <button type="button" class="Bouton_new3Rechercher btn btn-labeled btn-default " data-original-title="Choisir" data-toggle="modal" data-target="#Modal" (click)="onOpenModalAdmission('choisir')">
+                            <i class="fa-solid fa-circle-check IconSave"></i>
+                            <div class="bouton_style-2"> {{'Choisie' |
+                                i18n:i18nService.currentLanguage}} </div>
+                        </button>
+                    </div>
+                </fieldset>
+            </div>
+        </p-panel>
+
+
+
+
+
+    </div>
+
+</p-dialog>
+
+
+
+<p-dialog id="ModalAddAdmission" header="Header" [scrollLeft]="true" #ModalAddAdmission [closeOnEscape]="true" [(visible)]="visibleModalNewAdmission" data-backdrop="false" [modal]="true" styleClass="ModalAddAdmission" [draggable]="false">
+
+
+    <ng-template pTemplate="header">
+
+
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        </div>
+        <div class="FloatLeft">
+            <!-- <button class="btn btn-default save-add-ModalSmall" (click)="PostAdmission()">
+                <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                {{'Save' | i18n:i18nService.currentLanguage}}
+            </button>
+            <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                {{'Close' | i18n:i18nService.currentLanguage}}
+            </button> -->
+        </div>
+
+
+
+    </ng-template>
+
+    <div class="modal-body" style="height: 440px;">
+
+
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-12">
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' |
+                            i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45 " style="max-width: 130px;">
+                            <input readonly disabled id="codeSaisie" maxlength="10" name="codeSaisie" type="text" class=" form-control-dev input-xs" #codeSaisieInput required [(ngModel)]="codeSaisie">
+
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-6 ">
+
+                    </section>
+                </div>
+
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'CodePatient' |
+                            i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45 " style="max-width: 130px;">
+                            <input readonly disabled id="CodePatient" maxlength="10" name="CodePatient" type="text" class=" form-control-dev input-xs" #codePatientInput required [(ngModel)]="CodePatientAdm">
+
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-6 ">
+
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'Clinique' |
+                            i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45 " style="max-width: 130px;">
+                            <p-dropdown name="cliniquePatient" [filter]="true" appendTo="body" [options]="ListRSLTClinique" [(ngModel)]="selectedCliniqueAdm" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #cliniquePatient="ngModel">
+                            </p-dropdown>
+                        </div>
+                    </section>
+                </div>
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label flex-4 ">{{'NomFullAr' | i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45">
+                            <input type="text" id="nomFullAr" maxlength="200" name="nomFullAr" class=" form-control-dev input-xs" [(ngModel)]="nomFullArAdm">
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-6">
+                        <!-- <label class="control-label  flex-4  "> {{'NomFullLt' | i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45 ">
+                            <input type="text" id="nomFullLt" maxlength="200" name="nomFullLt" class=" form-control-dev input-xs" [(ngModel)]="NomFullLtAdm">
+
+
+                        </div> -->
+                    </section>
+
+                </div>
+
+
+                <div class="flex-row-start flex-12">
+                    <p-tabView [style]="{'width':'870px'}">
+                        <p-tabPanel [header]="LabelOptometry">
+                            <div class="flex-row-start flex-12" style="display: flex;">
+                                <label class="control-label flex-2"> {{'LabelOptometry' |
+                                    i18n:i18nService.currentLanguage}}
+                                    : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                                <div class="control-input  flex-10 " style="display: flex; place-content: space-between;">
+
+
+                                    <div class="flex-5" style="display: grid; justify-items: center;">
+                                        <label class="control-label "> Right </label>
+                                        <i class="fa-solid fa-eye" style="font-size: 40px;"></i>
+
+                                        <input style="max-width: 60px; margin-top: 10px;" type="number" id="rightEye" maxlength="200" name="rightEye" class=" form-control-dev input-xs" [(ngModel)]="rightEye">
+
+                                        <div style="display: flex;margin-top: 20px;width: 300px;">
+                                            <label class="control-label "> ملاحظة :</label>
+                                            <form [formGroup]="formcommentRightEye">
+                                                <textarea [ngStyle]="{'width':'200px' , 'margin-right': '10px'}" rows="5" cols="20" [(ngModel)]="commentRightEye" pInputTextarea formControlName="text">
+                                                </textarea>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex-5" style="display: grid; justify-items: center;">
+                                        <label class="control-label "> Left </label>
+                                        <i class="fa-solid fa-eye" style="font-size: 40px;"></i>
+                                        <input style="max-width: 60px; margin-top: 10px;" type="number" id="leftEye" maxlength="200" name="leftEye" class=" form-control-dev input-xs" [(ngModel)]="leftEye">
+                                        <div style="display: flex;margin-top: 20px;width: 300px;">
+                                            <label class="control-label "> ملاحظة : </label>
+                                            <form [formGroup]="formcommentLeftEye">
+                                                <textarea [ngStyle]="{'width':'200px' , 'margin-right': '10px'}" rows="5" cols="20" [(ngModel)]="commentLeftEye" pInputTextarea formControlName="text">
+                                                </textarea>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </p-tabPanel>
+                        <p-tabPanel [header]="LabelPressure">
+                            <div class="flex-row-start flex-12" style="display: flex;">
+                                <label class="control-label flex-4"> {{'LabelPressure' |
+                                    i18n:i18nService.currentLanguage}}
+                                    : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                                <div class="control-input  flex-8 " style="display: flex; place-content: space-between;">
+
+
+                                    <div class="flex-row-start flex-4 " style="display: grid; justify-items: center;">
+                                        <label class="control-label "> Right </label>
+                                        <i class="fa-solid fa-eye" style="font-size: 40px;"></i>
+
+                                        <div style="display: grid; justify-items: center;">
+                                            <div style="display: flex;margin-top: 20px ;width: 100%;">
+                                                <label class="control-label ">mmHG</label>
+                                                <input style="max-width: 60px; margin-top: 10px; text-align-last: center;" type="number" id="rightEye" maxlength="200" name="rightEye" class=" form-control-dev input-xs" [(ngModel)]="rightEyePressure">
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="flex-row-start flex-4 " style="display: grid; justify-items: center;">
+                                        <label class="control-label "> Left </label>
+                                        <i class="fa-solid fa-eye" style="font-size: 40px;"></i>
+                                        <div style="display: flex;margin-top: 20px; width: 100%;">
+                                            <label class="control-label ">mmHG</label>
+                                            <input style="max-width: 60px; margin-top: 10px; text-align-last: center;" type="number" id="leftEyePressure" maxlength="200" name="leftEyePressure" class=" form-control-dev input-xs" [(ngModel)]="leftEyePressure">
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </p-tabPanel>
+                        <p-tabPanel [header]="LabelFundus">
+                            <div class="flex-row-start flex-12" style="display: flex;">
+                                <label class="control-label flex-2"> {{'LabelFundus' |
+                                    i18n:i18nService.currentLanguage}}
+                                    : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                                <div class="control-input  flex-8 " style="display: flex; place-content: space-between;">
+
+
+                                    <div style="display: grid; justify-items: center;">
+                                        <label class="control-label "> Right </label>
+                                        <i class="fa-solid fa-eye" style="font-size: 40px;"></i>
+
+                                        <div style="display: grid; justify-items: center;">
+                                            <div style=" margin-top: 20px ;width: 100%; justify-items: self-end;">
+
+                                                <p-dropdown name="RSLTFundusRight" [filter]="true" appendTo="body" [options]="ListRSLTFundus" [(ngModel)]="selectedRSLTFundusRight" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #RSLTFundusRight="ngModel">
+                                                </p-dropdown>
+
+                                                <div style="display: flex;    margin-top: 20px;">
+                                                    <label class="control-label ">ملاحظة :</label>
+
+                                                    <form [formGroup]="formcommentRightEyeFundus">
+                                                        <textarea [ngStyle]="{'width':'200px' , 'margin-right': '10px'}" rows="5" cols="20" [(ngModel)]="commentRightEyeFundus" pInputTextarea formControlName="text">
+                                                        </textarea>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div style="display: grid; justify-items: center;">
+                                        <label class="control-label "> Left </label>
+                                        <i class="fa-solid fa-eye" style="font-size: 40px;"></i>
+                                        <div style=" margin-top: 20px; width: 100%; justify-items: self-end;">
+                                            <p-dropdown name="RSLTFundusLeft" [filter]="true" appendTo="body" [options]="ListRSLTFundus" [(ngModel)]="selectedRSLTFundusLeft" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #RSLTFundusLeft="ngModel">
+                                            </p-dropdown>
+
+                                            <div style="display: flex;    margin-top: 20px;">
+                                                <label class="control-label ">ملاحظة :</label>
+                                                <form [formGroup]="formcommentLeftEyeFundus">
+                                                    <textarea [ngStyle]="{'width':'200px' , 'margin-right': '10px'}" rows="5" cols="20" [(ngModel)]="commentLeftEyeFundus" pInputTextarea formControlName="text">
+                                                    </textarea>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </p-tabPanel>
+                        <p-tabPanel [header]="LabelCorneal">
+                            <div class="flex-row-start flex-12" style="display: block;">
+                                <label class="control-label flex-2"> {{'LabelCorneal' |
+                                    i18n:i18nService.currentLanguage}}
+                                    : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+
+                                <div class="control-input  flex-8 " style="display: flex; place-content: space-between;margin-right:150px ">
+
+
+                                    <div style="display: grid; justify-items: center;">
+                                        <label class="control-label "> Right </label>
+                                        <i class="fa-solid fa-eye" style="font-size: 40px;"></i>
+                                    </div>
+
+                                    <div style="display: grid; justify-items: center;">
+                                        <label class="control-label "> Left </label>
+                                        <i class="fa-solid fa-eye" style="font-size: 40px;"></i>
+                                    </div>
+                                </div>
+                                <div class="control-input  flex-10 " style="margin-top:20px; ;margin-right:80px ">
+                                    <p-table #dt2 [columns]="columnTabsCorneal" [value]="dataCorneal" selectionMode="single" [metaKeySelection]="false" dataKey="eye" [scrollable]="false" [tableStyle]="{'min-width': '43rem', 'width': '100%' , 'padding': '1px'}">
+
+                                        <ng-template pTemplate="header" let-col>
+                                            <tr>
+                                                <th *ngFor="let col of col" pResizableColumn>
+                                                    <span>{{col.header}}</span>
+                                                </th>
+                                            </tr>
+
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-domaine let-editing="editing">
+                                            <tr>
+                                                <td>
+
+                                                    {{ domaine.eye }}
+
+                                                </td>
+                                                <td [pEditableColumn]="domaine.k1" pEditableColumnField="k1">
+                                                    <p-cellEditor>
+                                                        <ng-template pTemplate="input">
+                                                            <input style="width: 100%;" pInputText type="number" [(ngModel)]="domaine.k1" required />
+                                                        </ng-template>
+                                                        <ng-template pTemplate="output">
+                                                            D {{ domaine.k1 }}
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                                <td [pEditableColumn]="domaine.k2" pEditableColumnField="k2">
+                                                    <p-cellEditor>
+                                                        <ng-template pTemplate="input">
+                                                            <input style="width: 100%;" pInputText type="number" [(ngModel)]="domaine.k2" />
+                                                        </ng-template>
+                                                        <ng-template pTemplate="output">
+                                                            D {{ domaine.k2 }}
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                                <td [pEditableColumn]="domaine.axis" pEditableColumnField="axis">
+                                                    <p-cellEditor>
+                                                        <ng-template pTemplate="input">
+                                                            <input style="width: 100%;" pInputText type="number" [(ngModel)]="domaine.axis" />
+                                                        </ng-template>
+                                                        <ng-template pTemplate="output">
+                                                            ° {{ domaine.axis }}
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                                <td [pEditableColumn]="domaine.commentaire" pEditableColumnField="commentaire">
+                                                    <p-cellEditor>
+                                                        <ng-template pTemplate="input">
+                                                            <input pInputText type="text" [(ngModel)]="domaine.commentaire" />
+                                                        </ng-template>
+                                                        <ng-template pTemplate="output">
+                                                            {{ domaine.commentaire }}
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td colspan="6">لا توجد بيانات</td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+
+
+                            </div>
+
+                        </p-tabPanel>
+                        <p-tabPanel [header]="LabelOperation">
+                            <div class="flex-row-start flex-12" style="display: flex;">
+                                <label class="control-label flex-4"> {{'Operation' |
+                                    i18n:i18nService.currentLanguage}}
+                                    : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                                <div class="control-input  flex-8">
+
+                                </div>
+
+
+                            </div>
+                            <div class="flex-row-start flex-12" style="display: flex;">
+
+
+                                <section class="flex-row-start flex-6 ">
+                                    <label class="control-label flex-4"> {{'DateDispo' |
+                                        i18n:i18nService.currentLanguage}} :<i
+                                            class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                                    <div class="control-input flex-60" style="padding: 0px ; align-content: center;">
+                                        <p-calendar (keyup.enter)="transformDateFormatOperation()" (onInput)="formatInputNewOperation($event)" (onChange)="transformDateFormatOperation()" (onSelect)="transformDateFormatOperation()" [(ngModel)]="dateOperation" [ngStyle]="{'width':'73%' , 'margin-right': '10px'}"
+                                            [showButtonBar]="true" appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+                                    </div>
+
+                                </section>
+                                <section class="flex-row-start flex-6 ">
+                                    <label class="control-label flex-4"> {{'Clinique' |
+                                        i18n:i18nService.currentLanguage}} :<i
+                                            class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                                    <div class="control-input flex-60" style="padding: 0px ; align-content: center;">
+
+                                        <p-dropdown name="clinique" [filter]="true" appendTo="body" [options]="ListRSLTClinique" [(ngModel)]="selectedCliniqueReqOperation" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #clinique="ngModel">
+                                        </p-dropdown>
+                                    </div>
+
+                                </section>
+                            </div>
+                            <div class="flex-row-start flex-12" style="display: flex;">
+
+
+                                <section class="flex-row-start flex-6 ">
+
+                                    <label class="control-label flex-4">{{'UniOpertation' |
+                                        i18n:i18nService.currentLanguage}} :<i
+                                            class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                                    <div class="control-input flex-60" style="padding: 0px ; align-content: center;">
+
+                                        <p-dropdown name="operation" [filter]="true" appendTo="body" [options]="ListRSLTOperation" [(ngModel)]="selectedOperation" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #clinique="ngModel">
+                                        </p-dropdown>
+                                    </div>
+                                </section>
+
+                                <section class="flex-row-start flex-6 ">
+                                    <label class="control-label flex-4">{{'PrixMoyen' |
+                                        i18n:i18nService.currentLanguage}} :<i
+                                            class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                                    <div class="control-input flex-60" style="padding: 0px ; align-content: center;">
+
+                                        <input readonly style="margin-top: 10px; text-align-last: center;" type="number" id="prixMoyene" maxlength="200" name="prixMoyene" class=" form-control-dev input-xs" disabled [(ngModel)]="prixMoyeneOperation">
+
+                                    </div>
+                                </section>
+
+
+                            </div>
+
+                        </p-tabPanel>
+
+                    </p-tabView>
+                </div>
+
+
+
+
+            </fieldset>
+
+        </div>
+
+
+
+
+    </div>
+
+    <ng-template pTemplate="footer">
+
+
+        <div class="FloatRight">
+            <button type="button" class="btn btn-default save-add-ModalSmall" data-original-title="ouvrirAdmissionOPeration" data-toggle="modalOperation" data-target="#ModalAddAdmissionOperation" (click)="onOpenModalAdmission('ouvrirAdmissionOperation')">
+                <i class="fa-solid fa-id-card-clip IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                {{'OpenFileOperation' |
+                i18n:i18nService.currentLanguage}}
+            </button>
+
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default save-add-ModalSmall" (click)="PostAdmission()">
+                <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                {{'Save' | i18n:i18nService.currentLanguage}}
+            </button>
+            <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="clearForm()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                {{'Close' | i18n:i18nService.currentLanguage}}
+            </button>
+        </div>
+
+
+
+    </ng-template>
+
+</p-dialog>
+
+
+
+<!-- modal  ADD  nv admission Operation -->
+<p-dialog id="ModalAddAdmissionOperation" header="Header" [scrollLeft]="true" #ModalAddAdmissionOperation [closeOnEscape]="true" [(visible)]="visibleModalAddAdmissionOperation" data-backdrop="false" [modal]="true" styleClass="ModalAddAdmOperation" [draggable]="false">
+
+    <ng-template pTemplate="header">
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        </div>
+        <div class="FloatLeft">
+
+            <button class="btn btn-default Reload-ModalSmall" (click)="ReturnModal('return')">
+                <i class="fa-solid fa-rotate-left IconBtnModal" style="color: #0024ff;font-size: 17px; "></i>
+                {{'Return' | i18n:i18nService.currentLanguage}}
+            </button>
+            <button class="btn btn-default save-add-ModalSmall" (click)="PostNewPatient()">
+                <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                {{'Save' | i18n:i18nService.currentLanguage}}
+            </button>
+            <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="CloseModalOperation()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                {{'Close' | i18n:i18nService.currentLanguage}}
+            </button>
+        </div>
+
+
+    </ng-template>
+
+    <div class="modal-body">
+
+
+        <div class="flex-row-start flex-12" style="display: block;">
+            <fieldset class="flex-12">
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-6 ">
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' |
+                            i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45 " style="max-width: 100px;">
+                            <input id="NewCodeSaisieAdmOperation" #codeSaisieAdmOperationInput maxlength="10" name="NewCodeSaisieAdmOperation" type="text" class=" form-control-dev input-xs" readonly disabled required [(ngModel)]="newCodeSaisieAdmOperation">
+
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-6 ">
+                    </section>
+                </div>
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-6 ">
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'CodePatient' |
+                            i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-7 ">
+                            <input id="codePatientOperation" #codePatientOperationInput maxlength="10" name="codePatientOperation" type="text" class=" form-control-dev input-xs" readonly disabled required [(ngModel)]="codePatientOperation">
+
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-6 ">
+                        <label class="control-label flex-4 ">{{'NomFullAr' | i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45">
+                            <input type="text" id="nomFullArOperation" maxlength="200" name="nomFullArOperation" class=" form-control-dev input-xs" #nomFullArOperationInput readonly disabled required [(ngModel)]="nomFullArOperation">
+                        </div>
+                    </section>
+                </div>
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-6 ">
+                        <label class="control-label flex-4 ">{{'Clinique' | i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45">
+                            <p-dropdown name="clinique" [filter]="true" appendTo="body" [options]="ListRSLTClinique" [(ngModel)]="selectedCliniqueOperation" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #clinique="ngModel">
+                            </p-dropdown>
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label  flex-4  "> {{'Age' | i18n:i18nService.currentLanguage}} :
+                            <i class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45 ">
+                            <input type="text" id="Age" maxlength="200" name="Age" class=" form-control-dev input-xs" #ageInput readonly disabled required [(ngModel)]="age">
+
+
+                        </div>
+                    </section>
+
+                </div>
+
+
+            </fieldset>
+            <!-- /// tabview  -->
+            <fieldset class="flex-12">
+                <div class="flex-row-start flex-12">
+                    <p-tabView [style]="{'width':'765px'}">
+                        <p-tabPanel [header]="LabelDiagnosisOperation">
+                            <div class="flex-row-start flex-12" style="display: flex;">
+                                <label class="control-label flex-12"> {{'LabelDiagnosisOperation' |
+                                    i18n:i18nService.currentLanguage}}
+                                    : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+
+                            </div>
+                            <div class="flex-row-start flex-12" style="display: flex;">
+                                <label class="control-label flex-14"> {{'ProbMedicaux' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <div class="control-input flex-10 ">
+                                    <input type="text" id="ProbMedicaux" maxlength="200" name="ProbMedicaux" class=" form-control-dev input-xs" #ProbMedicauxInput required [(ngModel)]="ProbMedicaux">
+
+
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="flex-row-start flex-12" style="display: flex;">
+                                <label class="control-label flex-14"> {{'LabelOptometry' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <form [formGroup]="formOptometryOperation">
+                                    <textarea style="width: 260px; margin-right: 10px; padding: 4px !important; text-align-last: center;" rows="5" cols="20" [(ngModel)]="areaOptometryOperation" pInputTextarea formControlName="text">
+                                    </textarea>
+                                </form>
+                                <label class="control-label flex-14"> {{'LabelPressure' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <form [formGroup]="formPressureOperation">
+                                    <textarea style="width: 260px; margin-right: 10px; padding: 4px !important; text-align-last: center;" rows="5" cols="20" [(ngModel)]="areaPressureOperation" pInputTextarea formControlName="text">
+                                    </textarea>
+                                </form>
+
+                            </div>
+
+                            <br>
+                            <div class="flex-row-start flex-12" style="display: flex;">
+                                <label class="control-label flex-14"> {{'LabelFundus' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <form [formGroup]="formFundusOperation">
+                                    <textarea style="width: 260px; margin-right: 10px; padding: 4px !important; text-align-last: center;" rows="5" cols="20" [(ngModel)]="areaFundusOperation" pInputTextarea formControlName="text">
+                                    </textarea>
+                                </form>
+                                <label class="control-label flex-14"> {{'LabelCorneal' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <form [formGroup]="formCornealOperation">
+                                    <textarea style="width: 260px; margin-right: 10px; padding: 4px !important; text-align-last: center;" rows="5" cols="20" [(ngModel)]="areaCornealOperation" pInputTextarea formControlName="text">
+                                    </textarea>
+                                </form>
+
+                            </div>
+
+                        </p-tabPanel>
+                        <p-tabPanel [header]="LabelDetailsOperation">
+                            <div class="flex-row-start flex-12" style="display: flex;">
+                                <label class="control-label flex-4"> {{'LabelPressure' |
+                                    i18n:i18nService.currentLanguage}}
+                                    : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                            </div>
+
+                            <br>
+                            <div class="flex-row-start flex-12" style="display: flex;">
+                                <label class="control-label flex-2"> {{'DateDispo' |
+                                    i18n:i18nService.currentLanguage}} :<i
+                                        class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                                <div class="control-input flex-4" style="padding: 0px ; align-content: center;">
+                                    <p-calendar disabled readonlyInput="" (keyup.enter)="transformDateFormatOperation()" (onInput)="formatInputNewOperation($event)" (onChange)="transformDateFormatOperation()" (onSelect)="transformDateFormatOperation()" [(ngModel)]="dateOperationFixed" [ngStyle]="{'width':'73%' , 'margin-right': '10px'}"
+                                        [showButtonBar]="true" appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+                                </div>
+
+                                <label class="control-label flex-2"> {{'time' |
+                                    i18n:i18nService.currentLanguage}} :<i
+                                        class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                                <div class="control-input flex-4" style="padding: 0px ; align-content: center;">
+                                    <p-inputMask [(ngModel)]="timeOperation" mask="99:99" placeholder="HH:mm" [slotChar]="':'" #timeInput>
+                                        <ng-template pTemplate="inputfield">
+                                            <input type="text" pInputText>
+                                        </ng-template>
+                                    </p-inputMask>
+                                </div>
+                            </div>
+
+                            <br>
+                            <label class="control-label flex-2">{{'PrixMoyen' |
+                                i18n:i18nService.currentLanguage}} :<i
+                                    class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                            <div class="control-input flex-10" style="padding: 0px ; align-content: center;">
+
+                                <input readonly style="margin-top: 10px; text-align-last: center;" type="number" id="prixMoyene" maxlength="200" name="prixMoyene" class=" form-control-dev input-xs" disabled [(ngModel)]="prixMoyeneOperation">
+
+                            </div>
+                            <br>
+
+                        </p-tabPanel>
+
+
+                    </p-tabView>
+                </div>
+
+
+
+
+
+            </fieldset>
+        </div>
+
+
+
+
+
+    </div>
+
+</p-dialog>
+
+<!-- modal  ADD  nv patient -->
+<p-dialog id="ModalAddPatient" header="Header" [scrollLeft]="true" #ModalAddPatient [closeOnEscape]="true" [(visible)]="visibleModalAddPatient" data-backdrop="false" [modal]="true" styleClass="ModalAdd" [draggable]="false">
+
+    <ng-template pTemplate="header">
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default save-add-ModalSmall" (click)="PostNewPatient()">
+                <i class="fa-solid fa-circle-check IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
+                {{'Save' | i18n:i18nService.currentLanguage}}
+            </button>
+            <button class="btn btn-default cancel-add-ModalSmall" :closable="true" data-dismiss="modal" (click)="CloseAddModalRecherche();clearForm()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                {{'Close' | i18n:i18nService.currentLanguage}}
+            </button>
+        </div>
+
+
+    </ng-template>
+
+    <div class="modal-body">
+
+
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-12">
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-6 ">
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'CodePatient' |
+                            i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45 " style="max-width: 100px;">
+                            <input id="NewCodePatient" #codePatientNewInput maxlength="10" name="NewCodePatient" type="text" class=" form-control-dev input-xs" readonly disabled required [(ngModel)]="codePatientNew">
+
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-6 ">
+                        <!-- <p-checkbox [binary]="true" name="actif" [(ngModel)]="actif"value="val3" [label]="LabelActif"></p-checkbox> -->
+                    </section>
+                </div>
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-6 ">
+                        <label class="control-label flex-4 ">{{'NomFullAr' | i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45">
+                            <input type="text" id="nomFullArNew" maxlength="200" name="nomFullArNew" class=" form-control-dev input-xs" #nomFullArNewInput required [(ngModel)]="nomFullArNew">
+                        </div>
+                    </section>
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label  flex-4  "> {{'NomFullLt' | i18n:i18nService.currentLanguage}} :
+                            <i class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45 ">
+                            <input type="text" id="nomFullLtNew" maxlength="200" name="nomFullLtNew" class=" form-control-dev input-xs" #nomFullLtNewInput required [(ngModel)]="nomFullLtNew">
+
+
+                        </div>
+                    </section>
+
+                </div>
+
+                <div class="flex-row-start flex-12">
+                    <section class="flex-row-start flex-6 ">
+                        <label class="control-label flex-4"> {{'DateNaiss' |
+                            i18n:i18nService.currentLanguage}} :<i
+                                class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+                        <div class="control-input flex-60" style="padding: 0px ; display: flex;">
+
+
+                            <p-calendar (keyup.enter)="transformDateFormat()" (onInput)="formatInputNew($event)" (onChange)="transformDateFormat()" (onSelect)="transformDateFormat()" [(ngModel)]="dateNaissanceNew" [ngStyle]="{ 'margin-right': '10px'}" [showButtonBar]="true" appendTo="body"
+                                [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+
+
+
+                        </div>
+
+                    </section>
+                    <section class="flex-row-start flex-6">
+                        <label class="control-label  flex-4" style="width: 25%; "> {{'NumTel' |
+                            i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-5-45 ">
+                            <input id="NumTel" [(ngModel)]="TelPatientNew" maxlength="10" name="NumTel" type="number" class="form-control-dev input-xs" #telPatientNewInput required>
+                        </div>
+                    </section>
+                </div>
+            </fieldset>
+        </div>
+
+
+    </div>
+
+</p-dialog>
+
+
+
+<!-- //// new Modal Recherche -->
+<p-dialog id="ModalRercherPatient" header="Header" [scrollLeft]="true" #modalRecherchePatient [closeOnEscape]="true" [(visible)]="visibleModalRecherPatient" data-backdrop="false" [modal]="true" styleClass="ModalAddRercherPatient" [draggable]="false">
+    <ng-template pTemplate="header">
+
+
+        <div class="FloatRight">
+            <h2 class="text-default headerForm"> {{formHeader}}</h2>
+        </div>
+        <div class="FloatLeft">
+            <button class="btn btn-default BtnCloseAdmissionPatient" :closable="true" data-dismiss="modal" (click)="CloseModalRecherPatient()">
+                <i class="fa-solid fa-circle-xmark IconBtnModal" style="color: #9e0000;font-size: 16px;"></i>
+                {{'Close' | i18n:i18nService.currentLanguage}}
+            </button>
+        </div>
+    </ng-template>
+
+    <div class="modal-body">
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-row-start flex-12">
+                <p-panel class="flex-12" [header]="HeaderPatientSelected">
+
+                    <div class="flex-row-start flex-12">
+                        <div class="flex-row-start flex-4">
+                            <label class="control-label  flex-4" style="width: 25%; "> {{'CodePatient' |
+                                i18n:i18nService.currentLanguage}} : </label>
+                            <div class="control-input flex-5-45 ">
+                                <input disabled="disabled" readonly id="CodePatientSelected" #codePatientSelectedInput maxlength="10" name="CodePatientSelected" type="text" class=" form-control-dev input-xs" [(ngModel)]="codePatientSelected">
+
+                            </div>
+                        </div>
+                        <div class="flex-row-start flex-4">
+                            <label class="control-label  flex-4" style="width: 25%; "> {{'NomFullAr' |
+                                i18n:i18nService.currentLanguage}} : </label>
+                            <div class="control-input flex-5-45 ">
+                                <input disabled="disabled" readonly id="NomFullArSelected" #NomFullArSelectedInput maxlength="10" name="NomFullArSelected" type="text" class=" form-control-dev input-xs" [(ngModel)]="nomFullArSelected">
+
+                            </div>
+                        </div>
+
+                        <div class="flex-row-start flex-4">
+
+                        </div>
+
+                    </div>
+                </p-panel>
+
+            </fieldset>
+
+        </div>
+        <div class="flex-row-start flex-12">
+            <fieldset class="flex-6">
+                <p-panel [header]="HeaderAddPatient">
+                    <div class=" flex-row-start flex-12">
+                        <div class="flex-row-start flex-6">
+                            <label class="control-label  flex-4" style="width: 25%; "> {{'CodePatient' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-5-45 " style="max-width: 100px;">
+                                <input id="NewCodePatient" #codePatientNewInput maxlength="10" name="NewCodePatient" type="text" class=" form-control-dev input-xs" required [(ngModel)]="codePatientNew">
+
+                            </div>
+                        </div>
+                        <div class=" flex-row-start  flex-6">
+
+                        </div>
+
+                    </div>
+
+                    <div class=" flex-row-start flex-12">
+                        <div class="flex-row-start flex-6">
+                            <label class="control-label  flex-5" style="width: 25%; "> {{'NomFullAr' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-8 ">
+                                <input id="NewNomFullAr" #NomFullArNewInput maxlength="200" name="NewNomFullAr" type="text" class=" form-control-dev input-xs" required [(ngModel)]="newNomFullAr">
+
+                            </div>
+                        </div>
+                        <div class=" flex-row-start  flex-6">
+                            <label class="control-label  flex-5" style="width: 25%; "> {{'NomFullLt' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-8 ">
+                                <input id="newNomFullLt" #newNomFullLtNewInput maxlength="200" name="newNomFullLt" type="text" class=" form-control-dev input-xs" required [(ngModel)]="newNomFullLt">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class=" flex-row-start flex-12">
+                        <div class="flex-row-start flex-6">
+                            <label class="control-label  flex-5" style="width: 25%; "> {{'Age' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-8 ">
+                                <input id="NewAge" #NewAgeNewInput maxlength="3" name="NewAge" type="number" class=" form-control-dev input-xs" required [(ngModel)]="newAge">
+
+                            </div>
+                        </div>
+
+                        <div class="flex-row-start flex-6">
+                            <label class="control-label  flex-5" style="width: 25%; "> {{'DateNaiss' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-8 " style="align-self: center;">
+                                <p-calendar (keyup.enter)="transformDateFormatDateNaissance()" (onInput)="formatInputNewDateNaissance($event)" (onChange)="transformDateFormatDateNaissance()" (onSelect)="transformDateFormatDateNaissance()" [(ngModel)]="dateNaissance" [showButtonBar]="true"
+                                    appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class=" flex-row-start flex-12">
+
+                        <div class=" flex-row-start  flex-6">
+                            <label class="control-label  flex-5" style="width: 25%; "> {{'Gender' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-8 dropDownStyle">
+                                <p-dropdown name="newGenderModel" [filter]="true" appendTo="body" [options]="newGender" [(ngModel)]="selectedNewGender" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #newGenderModel="ngModel">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                        <div class=" flex-row-start  flex-6">
+                            <label class="control-label  flex-5" style="width: 25%; "> {{'NumTel' |
+                                i18n:i18nService.currentLanguage}} : <i
+                                    class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                            <div class="control-input flex-8 ">
+                                <input id="numTelNew" #numTelNewInput maxlength="12" name="NewAge" type="number" class=" form-control-dev input-xs" required [(ngModel)]="numTelNew">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class=" flex-row-start flex-12">
+
+                        <label class="control-label  flex-2"> {{'RefDoctor' |
+                            i18n:i18nService.currentLanguage}} : <i
+                                class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                        <div class="control-input flex-10 " style="align-self: center;">
+                            <input id="RefDoctorNew" #RefDoctorNewInput maxlength="100" name="RefDoctorNew" type="text" class=" form-control-dev input-xs" required [(ngModel)]="refDoctorNew">
+
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class=" flex-row-start flex-12">
+                        <div class=" flex-row-start  flex-2">
+                            <label class="control-label  "> {{'VisiteDate' |
+                                i18n:i18nService.currentLanguage}} : </label>
+
+                        </div>
+                        <div class=" flex-row-start  flex-10">
+                            <p-table [value]="dataVisite" dataKey="code" [tableStyle]="{ 'min-width': '50rem' }">
+                                <!-- <ng-template pTemplate="caption" class="col-md-12">
+                                    <label class="control-label  flex-5" style="width: 25%; "> {{'VisiteDate' |
+                                        i18n:i18nService.currentLanguage}} : <i
+                                            class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
+                                </ng-template> -->
+
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:35%">
+                                            {{'VisiteDate' | i18n:i18nService.currentLanguage}}
+                                        </th>
+                                        <th style="width:35%">
+                                            {{'TypeVisite' | i18n:i18nService.currentLanguage}}
+                                        </th>
+                                        <th style="width:25%">
+
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-dateVisites let-editing="editing" let-ri="rowIndex">
+                                    <tr>
+                                        <td [pEditableColumn]="dateVisites.dateVisite" pEditableColumnField="dateVisite">
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+
+                                                    <p-calendar (keyup.enter)="transformDateFormatDateVisite()" (onInput)="formatInputNewDateVisite($event)" (onChange)="transformDateFormatDateVisite()" (onSelect)="transformDateFormatDateVisite()" [(ngModel)]="dateVisites.dateVisite" [showButtonBar]="true"
+                                                        appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+
+
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{ dateVisites.dateVisite | date:'yyyy-MM-dd' }}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td [pEditableColumn]="dateVisites.typeVisite" pEditableColumnField="typeVisite">
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+
+                                                    <p-dropdown [options]="newTypeVisite" appendTo="body" [(ngModel)]="dataVisite[0].typeVisite" [style]="{'width':'100%'}" (onChange)="addNewRow()" />
+
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{ dateVisites.typeVisite }}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td style="text-align-last: center;">
+
+                                            <button style="margin-left:5px" pButton type="button" pDeleteEditableRow icon="pi pi-backward " class="p-button-item-eye " data-original-title="DetailsAdmission" data-toggle="modal" data-target="#ModalDetailsAdmission" (click)="openModal('selectPatientAdded',ri) "></button>
+
+                                            <button style="margin-right:5px" pButton type="button" pDeleteEditableRow icon="pi pi-eye" class="p-button-item-eye " data-original-title="DetailsAdmission" data-toggle="modal" data-target="#ModalDetailsAdmission" (click)="openModal('dateVisites',ri) "></button>
+
+                                            <button style="margin-right:5px" *ngIf="ri !== 0" pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="p-button-item " (click)="removeRow(ri) "></button>
+
+                                        </td>
+
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+
+
+                    </div>
+
+
+                </p-panel>
+
+            </fieldset>
+            <fieldset class="flex-6">
+                <p-panel [header]="HeaderListPatient">
+                    <p-table [value]="dataPatient" [columns]="columnTabsListPatient" dataKey="codePatient" [tableStyle]="{ 'min-width': '50rem' }" selectionMode="single" (onRowUnselect)="onRowUnselectFromTabsRecherPatient($event)" [(selection)]="SelectedPatientFromList"
+                        (onRowSelect)="onRowSelectFromTabsRecherchePatient($event)">
+
+                        <ng-template pTemplate="colgroup" let-col>
+                            <colgroup>
+                                <col *ngFor="let col of col" [style.width]="col.width">
+                            </colgroup>
+                        </ng-template>
+                        <ng-template pTemplate="header" let-col>
+                            <tr>
+                                <th *ngFor="let col of col" pResizableColumn>
+                                    <span>{{col.header}}</span>
+                                </th>
+                            </tr>
+                            <tr class="filter-row">
+                                <th *ngFor="let col of col">
+                                    <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-patient let-ri="rowIndex">
+                            <tr [pSelectableRow]="patient">
+                                <td> {{ patient.codePatient }} </td>
+                                <td> {{ patient.nomFullAr }} </td>
+                                <!-- <td> {{ patient.nomFullLt }} </td> -->
+                                <td> {{ patient.dateNaissance }} </td>
+                                <td> {{ patient.numTel }} </td>
+                                <td> {{ patient.diagnosis }} </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-panel>
+            </fieldset>
+
+        </div>
+
+
+
+
+    </div>
+
+</p-dialog>

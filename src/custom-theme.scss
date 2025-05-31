@@ -1,0 +1,8 @@
+@use '@angular/material' as mat;
+// @use '@angular/material/theming'; // needed for define-light-theme
+@include mat.core(); // crucial step
+html {
+    color-scheme: light;
+    // @include mat.define-light-theme(( color: ( primary: mat.$blue-palette, accent: mat.$pink-palette, warn: mat.$red-palette), // typography: mat.typography.Roboto,
+    // density: 0));
+}

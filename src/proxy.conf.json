@@ -1,0 +1,66 @@
+{
+    "/auth": {
+        "target": "http://localhost:5061/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
+    },
+    "/soc": {
+        "target": "http://localhost:5061/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
+    },
+    "/dashbord": {
+        "target": "http://localhost:5061/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
+    },
+    "/parametrage": {
+        "target": "http://localhost:5061/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
+    },
+    "/reception": {
+        "target": "http://localhost:5061/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
+    },
+    "/api/*": {
+        "target": "http://localhost:5061/",
+        "secure": false,
+        "changeOrigin": true,
+        "pathRewrite": {
+            "^/api": ""
+        }
+    },
+    "/pharmacie": {
+        "target": "http://localhost:5061/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
+    },
+    "/doctor": {
+        "target": "http://localhost:5061/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
+    },
+    "/checksum": {
+        "target": "http://localhost:5061/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
+    }
+}
