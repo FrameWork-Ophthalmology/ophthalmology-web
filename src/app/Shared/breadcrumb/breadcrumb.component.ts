@@ -45,15 +45,15 @@ export class BreadcrumbComponent  implements OnInit {
 
   MethodeVisbileBreadCrumb(){   
     var count=0;
-    console.log(sessionStorage.getItem("auth-user"));
-    var intervalId = setInterval(() =>{if(sessionStorage.getItem("auth-user") == '' ||  sessionStorage.getItem("auth-user") === null ){ 
-      this.VisibleBreadCrmb = false;
-    }else{
+    // console.log(sessionStorage.getItem("auth-user"));
+    // var intervalId = setInterval(() =>{if(sessionStorage.getItem("auth-user") == '' ||  sessionStorage.getItem("auth-user") === null ){ 
+    //   this.VisibleBreadCrmb = false;
+    // }else{
       this.VisibleBreadCrmb = true; 
-    } 
-    count=count+1;
-    if (count==100) clearInterval(intervalId);
-    }, 10); 
+    // } 
+    // count=count+1;
+    // if (count==100) clearInterval(intervalId);
+    // }, 10); 
   }
 
   private getBreadcrumbs(

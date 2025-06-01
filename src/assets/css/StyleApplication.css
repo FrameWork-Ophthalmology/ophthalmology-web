@@ -432,7 +432,7 @@ tr.mat-footer-row {
 .sidebar.open+.mainbox {
     display: grid;
     width: 100%;
-    height: 250px;
+    height: 210px;
     grid-template-areas: "head head" "left  main" "left  foot";
     grid-template-rows: 50px 1fr 30px;
     grid-template-columns: 120px 1fr 0px;

@@ -90,6 +90,7 @@ import { AjoutAdmissionComponent } from './reception/ajout-admission/ajout-admis
 import { InputMaskModule } from 'primeng/inputmask';
 import { ListboxModule } from 'primeng/listbox'; 
 import { AdmissionComponent } from './menu-reception/admission/admission.component';
+import { EditionComponent } from './menu-edition/edition/edition.component';
 const languages = [
   { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
   { lang: 'English', flag: 'assets/images/county/eng.png', file: enI18n, valeur: 'en' },
@@ -128,6 +129,9 @@ AjoutAdmissionComponent,
 
    ///// menu reception
 AdmissionComponent,
+
+//menu edition
+EditionComponent
  
   ],
   imports: [   

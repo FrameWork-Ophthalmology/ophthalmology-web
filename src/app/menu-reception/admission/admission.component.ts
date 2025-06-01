@@ -119,7 +119,7 @@ export class AdmissionComponent implements OnInit {
       ]
 
       this.dataVisite = [
-        { code: '', dateVisite: '', typeVisite: '' },
+        { code: '1', dateVisite: '01/01/2025', typeVisite:   this.newTypeVisite[0].value || 1 },
       ]
 
       this.dataPatient = [

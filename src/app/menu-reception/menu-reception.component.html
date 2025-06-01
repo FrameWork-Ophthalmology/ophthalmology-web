@@ -2,11 +2,11 @@
     <div class="row text-center">
         <h2 class="TitleMenu"> {{'Reception' | i18nForMenuReception:i18nService.currentLanguage}} </h2>
         <div id="menu-box">
-            <div id="item" class="col-sm-6 col-md-3 myDIV " [routerLink]="['/menu_reception/ouvrir_admission']">
+            <div style="display: none;" id="item" class="col-sm-6 col-md-3 myDIV " [routerLink]="['/menu_reception/ouvrir_admission']">
                 <div class="container-block ">
                     <div class="block1">
                         <!-- <i class="fa-solid fa-user" style="font-size: 20px; margin-top: 5px;"></i> -->
-                        <i class="fa-solid fa-file-medical" style="font-size: 20px; margin-top: 5px;color: #337ab7;"></i>
+                        <i class="fa-solid fa-file-medical  fa-beat-fade" style="font-size: 20px; margin-top: 5px;color: #337ab7;"></i>
 
                     </div>
                     <div class="block2  ">
@@ -19,12 +19,11 @@
             <div id="item" class="col-sm-6 col-md-3 myDIV " [routerLink]="['/menu_reception/ouvrir_admission_v2']">
                 <div class="container-block ">
                     <div class="block1">
-                        <!-- <i class="fa-solid fa-user" style="font-size: 20px; margin-top: 5px;"></i> -->
-                        <i class="fa-solid fa-file-medical" style="font-size: 20px; margin-top: 5px;color: #337ab7;"></i>
+                        <i class="fa-solid fa-file-medical  fa-fade" style="font-size: 20px; margin-top: 5px;color: #337ab7;"></i>
 
                     </div>
                     <div class="block2  ">
-                        <span class="FloatRight "> v2  {{'NewFile' | i18nForMenuReception:i18nService.currentLanguage}}  </span>
+                        <span class="FloatRight ">    {{'NewFile' | i18nForMenuReception:i18nService.currentLanguage}}  </span>
 
                     </div>
                 </div>

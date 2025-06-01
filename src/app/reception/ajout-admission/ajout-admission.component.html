@@ -350,6 +350,55 @@
 
                 <div class="flex-row-start flex-12">
                     <p-tabView [style]="{'width':'870px'}">
+
+                        <p-tabPanel [header]="LabelDiagnosis">
+                            <div class="flex-row-start flex-12" style="display: flex;">
+                                <label class="control-label flex-12"> {{'diagnosis' |
+                                    i18n:i18nService.currentLanguage}}
+                                    : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
+
+                            </div>
+
+                            <div class="flex-row-start flex-12" style="display: flex;">
+                                <label class="control-label flex-14"> {{'chiefComplaint' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <form [formGroup]="formchiefComplaint">
+                                    <textarea style="width: 260px; margin-right: 10px; padding: 4px !important; text-align-last: center;" rows="5" cols="20" [(ngModel)]="areachiefComplaint" pInputTextarea formControlName="text">
+                                    </textarea>
+                                </form>
+                                <label class="control-label flex-14"> {{'diagnosis' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <form [formGroup]="formDiagnosis">
+                                    <textarea style="width: 260px; margin-right: 10px; padding: 4px !important; text-align-last: center;" rows="5" cols="20" [(ngModel)]="areaDiagnosis" pInputTextarea formControlName="text">
+                                    </textarea>
+                                </form>
+
+                            </div>
+
+                            <br>
+                            <div class="flex-row-start flex-12" style="display: flex;">
+                                <label class="control-label flex-14"> {{'PastMedicalHistory' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <form [formGroup]="formPastHistory">
+                                    <textarea style="width: 260px; margin-right: 10px; padding: 4px !important; text-align-last: center;" rows="5" cols="20" [(ngModel)]="areaPastHistory" pInputTextarea formControlName="text">
+                                    </textarea>
+                                </form>
+                                <label class="control-label flex-14"> {{'ReasonVisite' |
+                                    i18n:i18nService.currentLanguage}} : </label>
+
+                                <form [formGroup]="formReasonVisite">
+                                    <textarea style="width: 260px; margin-right: 10px; padding: 4px !important; text-align-last: center;" rows="5" cols="20" [(ngModel)]="areaReasonVisite" pInputTextarea formControlName="text">
+                                    </textarea>
+                                </form>
+
+                            </div>
+
+                        </p-tabPanel>
+
+
                         <p-tabPanel [header]="LabelOptometry">
                             <div class="flex-row-start flex-12" style="display: flex;">
                                 <label class="control-label flex-2"> {{'LabelOptometry' |
@@ -621,7 +670,7 @@
                                             class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                                     <div class="control-input flex-60" style="padding: 0px ; align-content: center;">
 
-                                        <p-dropdown name="operation" [filter]="true" appendTo="body" [options]="ListRSLTOperation" [(ngModel)]="selectedOperation" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #clinique="ngModel">
+                                        <p-dropdown name="operation" [filter]="true" appendTo="body" [options]="ListRSLTOperation" [(ngModel)]="selectedOperation" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #clinique="ngModel" (ngModelChange)="GetPrixOperationSelcted(this.selectedOperation)">
                                         </p-dropdown>
                                     </div>
                                 </section>
@@ -661,6 +710,12 @@
 
 
         <div class="FloatRight">
+            <button type="button" class="btn btn-default save-add-ModalSmall" data-original-title="ouvrirAdmissionOPeration" data-toggle="modalOperation" data-target="#ModalAddAdmissionOperation" (click)="LoadData(this.CodePatientAdm)">
+            
+                <i class="fa-solid fa-upload IconBtnModal " style="color: #0b097c;font-size: 16px; "></i>
+                {{'loadDataFromMachine' |
+                i18n:i18nService.currentLanguage}}
+            </button>
             <button type="button" class="btn btn-default save-add-ModalSmall" data-original-title="ouvrirAdmissionOPeration" data-toggle="modalOperation" data-target="#ModalAddAdmissionOperation" (click)="onOpenModalAdmission('ouvrirAdmissionOperation')">
                 <i class="fa-solid fa-id-card-clip IconBtnModal" style="color: #065c00;font-size: 16px; "></i>
                 {{'OpenFileOperation' |
@@ -723,7 +778,7 @@
                         <label class="control-label  flex-4" style="width: 25%; "> {{'CodeSaisie' |
                             i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
-                        <div class="control-input flex-5-45 " style="max-width: 100px;">
+                        <div class="control-input flex-5-45 ">
                             <input id="NewCodeSaisieAdmOperation" #codeSaisieAdmOperationInput maxlength="10" name="NewCodeSaisieAdmOperation" type="text" class=" form-control-dev input-xs" readonly disabled required [(ngModel)]="newCodeSaisieAdmOperation">
 
                         </div>
@@ -1189,7 +1244,7 @@
                                             <p-cellEditor>
                                                 <ng-template pTemplate="input">
 
-                                                    <p-dropdown [options]="newTypeVisite" appendTo="body" [(ngModel)]="dataVisite[0].typeVisite" [style]="{'width':'100%'}" (onChange)="addNewRow()" />
+                                                    <p-dropdown [options]="newTypeVisite" appendTo="body" [(ngModel)]="dataVisite[ri].typeVisite" [style]="{'width':'100%'}" (onChange)="addNewRow()" />
 
                                                 </ng-template>
                                                 <ng-template pTemplate="output">

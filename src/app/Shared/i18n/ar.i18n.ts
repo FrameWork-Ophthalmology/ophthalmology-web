@@ -219,7 +219,7 @@ const arI18n = {
  'nbreReqPrescriptionChronique':'عدد  الوصفات المزمنة',
  'nbreReqPrescriptionNormal':'عدد  الوصفات العادية',
  'diagnosis':'التشخيص',
- 'cheifComplaint':'الشكوى الرئيسية',
+ 'chiefComplaint':'الشكوى الرئيسية',
  'prestations':'الخدمات',
 
  'Clinique':'العيادة',
@@ -275,6 +275,7 @@ const arI18n = {
  'PINHOLELE':'PINHOLE العين اليسرى',
  'RefractionLE':'قياس النظر بالعين اليسرى',
  'RefractionRE':'قياس النظر بالعين اليمنى',
+ 'loadDataFromMachine':'تحميل البيانات من الجهاز',
 };
 
 

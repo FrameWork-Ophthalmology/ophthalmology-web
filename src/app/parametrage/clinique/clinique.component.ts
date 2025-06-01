@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { I18nService } from '../../Shared/i18n/i18n.service';
 import { CalanderTransService } from '../../Shared/CalanderService/CalanderTransService';
@@ -11,10 +11,10 @@ import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
   styleUrls: ['./clinique.component.css' , '.../../../src/assets/css/StyleApplication.css'],
   providers: [CalanderTransService]
 })
-export class CliniqueComponent {
+export class CliniqueComponent implements OnInit {
   constructor(private router: Router, private CtrlAlertify: ControlServiceAlertify,public i18nService: I18nService, private calandTrans: CalanderTransService)
   {this.calandTrans.setLangAR();}
-  products!: any[];
+  dataClinic!: any[];
   @Output() closed: EventEmitter<string> = new EventEmitter();
   closeThisComponent() {
     const parentUrl = this.router.url.split('/').slice(0, -1).join('/');
@@ -25,6 +25,7 @@ export class CliniqueComponent {
 
   ngOnInit() {
     this.GetColumns();
+    this.GetAllCliniqueActif()
     this.items = [
       { label: this.i18nService.getString('LabelActif') || 'LabelActif', icon: 'pi pi-file-check', command: () => { this.GetAllCliniqueActif() } },
       { label: this.i18nService.getString('LabelInActif') || 'LabelInActif', icon: 'pi pi-file-excel', command: () => { this.GetAllCliniqueInActif() } },
@@ -40,9 +41,9 @@ export class CliniqueComponent {
   GetColumns() {
     this.cols = [
       { field: 'codeSaisie', header: this.i18nService.getString('CodeSaisie') || 'CodeSaisie', type: 'text', width: '22%' },
-      { field: 'designationArPres', header: this.i18nService.getString('DesignationAr') || 'DesignationAr', type: 'text', width: '22%' },
-      { field: 'designationLtPres', header: this.i18nService.getString('DesignationLt') || 'DesignationLt', type: 'text', width: '16%' },
-       { field: 'actif', header: this.i18nService.getString('LabelActif') || 'LabelActif', type: 'text', width: '10%' }, // exam Count
+      { field: 'designationAr', header: this.i18nService.getString('DesignationAr') || 'DesignationAr', type: 'text', width: '22%' },
+      { field: 'designationLt', header: this.i18nService.getString('DesignationLt') || 'DesignationLt', type: 'text', width: '16%' },
+       { field: 'actif', header: this.i18nService.getString('LabelActif') || 'LabelActif', type: 'checkbox', width: '10%' }, // exam Count
  
     ];
   }
@@ -82,19 +83,34 @@ export class CliniqueComponent {
   visible!: boolean;
   LabelActif!: string;
    userCreate = sessionStorage.getItem("userName");
-  dataClinique = new Array<any>();
+  // dataClinique = new Array<any>();
  
 
 
   GetAllClinique(){
+    this.dataClinic = [
+      { codeSaisie:'Clinic1', designationAr: 'مستشفى 1 ', designationLt: 'Clinic Test 1 ', actif: true },
+      { codeSaisie:'Clinic2', designationAr: 'مستشفى 2 ', designationLt: 'Clinic Test 2 ', actif: true },
+      { codeSaisie:'Clinic3', designationAr: 'مستشفى 3 ', designationLt: 'Clinic Test 3 ', actif: true },
+      { codeSaisie:'Clinic4', designationAr: 'مستشفى 4 ', designationLt: 'Clinic Test 4 ', actif: false },
+      ]
 
   }
   
   GetAllCliniqueActif(){
+    this.dataClinic = [
+      { codeSaisie:'Clinic1', designationAr: 'مستشفى 1 ', designationLt: 'Clinic Test 1 ', actif: true },
+      { codeSaisie:'Clinic2', designationAr: 'مستشفى 2 ', designationLt: 'Clinic Test 2 ', actif: true },
+      { codeSaisie:'Clinic3', designationAr: 'مستشفى 3 ', designationLt: 'Clinic Test 3 ', actif: true },
+      ]
     
   }
     
   GetAllCliniqueInActif(){
+    this.dataClinic = [ 
+      { codeSaisie:'Clinic4', designationAr: 'مستشفى 4 ', designationLt: 'Clinic Test 4 ', actif: false },
+      
+      ]
     
   }
 
@@ -219,5 +235,7 @@ export class CliniqueComponent {
   CloseModalPrint() {
     this.visibleModalPrint = false;
   }
+
+  first = 0;
 
 }

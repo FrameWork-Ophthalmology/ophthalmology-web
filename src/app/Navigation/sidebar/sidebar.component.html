@@ -261,12 +261,22 @@
                     <a [routerLink]="['/menu_parametrage']"><i class="fa fa-cog   fa-fw"></i> <span id="spanLabelSetting"
                             class="ttspan-fill">{{'Setting' | i18n:i18nService.currentLanguage}}</span> </a>
                 </li>
-                <li routerLinkActive="active">
+                <!-- <li routerLinkActive="active">
                     <a href="#">
 
                         <i class="fa-solid fa-chart-pie"></i>
                         <span id="spanLabelSetting" class="ttspan-fill"> {{'Edition' | i18n:i18nService.currentLanguage}}</span></a>
+                </li> -->
+
+
+
+                <li routerLinkActive="active">
+                    <a [routerLink]="['/menu_edition']">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span id="spanLabelEdition" class="ttspan-fill"> {{'Edition' | i18n:i18nService.currentLanguage}}</span></a>
                 </li>
+
 
                 <li routerLinkActive="active">
                     <a [routerLink]="['/check_sum']">
@@ -274,7 +284,6 @@
                         <i class="fa-solid fa-code-branch"></i>
                         <span id="spanLabelSetting" class="ttspan-fill"> {{'CheckSum' | i18n:i18nService.currentLanguage}}</span></a>
                 </li>
-
             </ul>
 
 

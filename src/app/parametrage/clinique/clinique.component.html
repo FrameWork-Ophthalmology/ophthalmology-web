@@ -15,7 +15,7 @@
                     </div>
                      -->
                     <div class="panel-body">
-                        <p-table [columns]="cols" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+                        <p-table #dt1 [columns]="cols" [first]="first" [value]="dataClinic" selectionMode="single" [metaKeySelection]="false" [(selection)]="selectedClinqiue" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" dataKey="code">
 
                             <ng-template pTemplate="caption" class="col-md-12">
                                 <div>
@@ -59,7 +59,7 @@
                                 </tr>
                                 <tr class="filter-row">
                                     <th *ngFor="let col of columns">
-                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type="text" field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
+                                        <p-columnFilter [hideOnClear]="true" [showMenu]="false" [showAddButton]="false" [showOperator]="false" [matchMode]="'contains'" [showMatchModes]="false" type={{col.type}} field={{col.field}} placeholder=" " ariaLabel="Filter Country"></p-columnFilter>
                                     </th>
                                 </tr>
                             </ng-template>

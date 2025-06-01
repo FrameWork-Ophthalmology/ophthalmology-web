@@ -45,23 +45,23 @@ export class SidebarComponent  {
   GetLogo() {
     if(sessionStorage.getItem("NomSociete") == undefined ||  sessionStorage.getItem("NomSociete") ==null){
     
-      this.societe.GetLogoClinique().subscribe(
-        (data: any) => {
+      // this.societe.GetLogoClinique().subscribe(
+      //   (data: any) => {
           
-          if (typeof data.logo === 'string' && data.logo.trim() !== '') {
-            sessionStorage.setItem("Logo",data.logo);
-            this.logo = this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${data.logo}`);
-            sessionStorage.setItem("NomSociete",data.nomSociete);
-            this.cdr.detectChanges(); 
+      //     if (typeof data.logo === 'string' && data.logo.trim() !== '') {
+      //       sessionStorage.setItem("Logo",data.logo);
+      //       this.logo = this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/jpg;base64,${data.logo}`);
+      //       sessionStorage.setItem("NomSociete",data.nomSociete);
+      //       this.cdr.detectChanges(); 
   
             
-          } else {
-            console.error("Invalid logo data received.");
+      //     } else {
+      //       console.error("Invalid logo data received.");
              
            
-          } 
-        } 
-      )
+      //     } 
+      //   } 
+      // )
     }
     else{
 

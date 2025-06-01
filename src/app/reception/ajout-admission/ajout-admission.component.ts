@@ -97,7 +97,20 @@ export class AjoutAdmissionComponent implements OnInit {
     this.formCornealOperation = this.fb.group({
       text: ['', Validators.required] // Add validators as needed
     });
-    // this.columnsTabCorneal(); // Initialize this early as well
+/////////  diagnosis
+    this.formDiagnosis = this.fb.group({
+      text: ['', Validators.required] // Add validators as needed
+    });
+    this.formPastHistory = this.fb.group({
+      text: ['', Validators.required] // Add validators as needed
+    });
+    this.formReasonVisite = this.fb.group({
+      text: ['', Validators.required] // Add validators as needed
+    });
+    this.formchiefComplaint = this.fb.group({
+      text: ['', Validators.required] // Add validators as needed
+    });
+     
 
 
   }
@@ -238,13 +251,13 @@ export class AjoutAdmissionComponent implements OnInit {
       ]
 
       this.dataVisite = [
-        { code: '', dateVisite: '', typeVisite: '' },
+        { code: '1', dateVisite: this.datePipe.transform(this.dateVisite, "yyyy-MM-dd"), typeVisite: this.newTypeVisite[0].value },
       ]
 
       this.dataPatient = [
-        { codePatient: 'ID25012930', nomFullAr: 'TEST NOM FL AR', nomFullLt: 'TEST NOM FULL LT', dateNaissance: '01/01/2025', numTel: '0910501037', diagnosis: 'TEST DIGNOSIS' },
-        { codePatient: 'ID25012931', nomFullAr: 'TEST NOM FL AR 2', nomFullLt: 'TEST NOM FULL LT 2', dateNaissance: '01/02/2025', numTel: '0910501038', diagnosis: 'TEST DIGNOSIS 2' },
-        { codePatient: 'ID25012932', nomFullAr: 'TEST NOM FL AR 3', nomFullLt: 'TEST NOM FULL LT 3', dateNaissance: '01/04/2025', numTel: '0910501039', diagnosis: 'TEST DIGNOSIS 3' }
+        { codePatient: 'ID25012930', nomFullAr: 'فلان بن فلان ', nomFullLt: 'TEST NAME FULL LT', dateNaissance: '01/01/2025', numTel: '0910501037', diagnosis: 'TEST DIGNOSIS' },
+        { codePatient: 'ID25012931', nomFullAr: '2 فلان بن فلان', nomFullLt: 'TEST NAME FULL LT 2', dateNaissance: '01/02/2025', numTel: '0910501038', diagnosis: 'TEST DIGNOSIS 2' },
+        { codePatient: 'ID25012932', nomFullAr: 'فلان بن فلان 3', nomFullLt: 'TEST NAME FULL LT 3', dateNaissance: '01/04/2025', numTel: '0910501039', diagnosis: 'TEST DIGNOSIS 3' }
       ]
 
     }
@@ -276,10 +289,10 @@ export class AjoutAdmissionComponent implements OnInit {
   listPatientPushed = new Array<any>();
   ListPatientTried = new Array<any>();
   GetAllPatient() {
-    this.recept_service.GetPatient().subscribe((data: any) => {
-      this.ListPatientTried = data;
+    // this.recept_service.GetPatient().subscribe((data: any) => {
+    //   this.ListPatientTried = data;
 
-    })
+    // })
   }
 
   leftEye = '';
@@ -303,7 +316,7 @@ export class AjoutAdmissionComponent implements OnInit {
   ListRSLTOperation = new Array<any>();
   rightEyePressure = '';
   leftEyePressure = '';
-  prixMoyeneOperation = '';
+  prixMoyeneOperation :any= '';
   commentLeftEye = '';
   commentLeftEyeFundus = '';
   commentRightEye = '';
@@ -321,6 +334,16 @@ export class AjoutAdmissionComponent implements OnInit {
   formOptometryOperation!: FormGroup;
   formFundusOperation!: FormGroup;
   formCornealOperation!: FormGroup;
+
+  formDiagnosis!: FormGroup;
+  formchiefComplaint!: FormGroup;
+  formPastHistory!: FormGroup;
+  formReasonVisite!: FormGroup;
+  areaDiagnosis = '';
+  areachiefComplaint = '';
+  areaPastHistory = '';
+  areaReasonVisite = '';
+
 
   // SelectedPatientFromList: any;
   nomFullArNew = '';
@@ -438,6 +461,7 @@ export class AjoutAdmissionComponent implements OnInit {
       this.LabelFundus = this.i18nService.getString('LabelFundus');
       this.LabelCorneal = this.i18nService.getString('LabelCorneal');
       this.LabelOperation = this.i18nService.getString('Operation');
+      this.LabelDiagnosis = this.i18nService.getString('diagnosis');
 
       this.ListRSLTFundus = [
         { value: '1', label: 'Positive' },
@@ -593,6 +617,9 @@ export class AjoutAdmissionComponent implements OnInit {
         `Eye: ${item.eye}  K1: ${item.k1 ?? ''}  D , K2: ${item.k2 ?? ''} D  , Axis: ${item.axis ?? ''} ° , Commentaire: ${item.commentaire ?? ''}\n`
       ).join('');
     }  
+
+    this.age = '36';
+    this.newCodeSaisieAdmOperation = 'AD0250023902'
     
    
 
@@ -626,15 +653,15 @@ export class AjoutAdmissionComponent implements OnInit {
     this.visibleModalAddAdmissionOperation = false;
   }
   getCodeSaisieAdmissionOPD() {
-    this.param_service.GetCompteur("CodeSaisieADMOPD").
-      subscribe((data: any) => {
-        this.codeSaisie = data.prefixe + data.suffixe;
-      })
+    // this.param_service.GetCompteur("CodeSaisieADMOPD").
+    //   subscribe((data: any) => {
+    //     this.codeSaisie = data.prefixe + data.suffixe;
+    //   })
   }
   GetCompteurPatient() {
-    this.param_service.GetCompteur("CompteurPatient").subscribe((data: any) => {
-      this.codePatientNew = data.prefixe + data.suffixe;
-    })
+    // this.param_service.GetCompteur("CompteurPatient").subscribe((data: any) => {
+    //   this.codePatientNew = data.prefixe + data.suffixe;
+    // })
   }
 
   PostAdmission() {
@@ -878,6 +905,7 @@ export class AjoutAdmissionComponent implements OnInit {
         this.LabelFundus = this.i18nService.getString('LabelFundus');
         this.LabelCorneal = this.i18nService.getString('LabelCorneal');
         this.LabelOperation = this.i18nService.getString('Operation');
+        this.LabelDiagnosis = this.i18nService.getString('diagnosis');
   
         this.ListRSLTFundus = [
           { value: '1', label: 'Positive' },
@@ -969,6 +997,20 @@ export class AjoutAdmissionComponent implements OnInit {
         this.formCornealOperation = this.fb.group({
           text: ['', Validators.required] // Add validators as needed
         });
+
+        this.formDiagnosis = this.fb.group({
+          text: ['', Validators.required] // Add validators as needed
+        });
+        this.formchiefComplaint = this.fb.group({
+          text: ['', Validators.required] // Add validators as needed
+        });
+
+        this.formPastHistory = this.fb.group({
+          text: ['', Validators.required] // Add validators as needed
+        }); this.formReasonVisite = this.fb.group({
+          text: ['', Validators.required] // Add validators as needed
+        });
+ 
   
         
       } else {
@@ -978,6 +1020,7 @@ export class AjoutAdmissionComponent implements OnInit {
         this.CtrlAlertify.showNotificationِCustom("PleaseChoiseDateVisteOrTypeViste"); //Show alert for missing data
       }
 
+      this.codeSaisie ='OPD250938471'
 
     } else if (mode === 'voirDetailsVisite') {
       // Handle 'voirDetailsVisite' mode
@@ -1000,4 +1043,18 @@ export class AjoutAdmissionComponent implements OnInit {
     }
 
   }
+
+  LoadData(codePatient:any){
+
+  }
+
+  GetPrixOperationSelcted(codeOperation: any) {
+    // this.param_service.GetPrixOperation(codeOperation).subscribe((data: any) => {
+    //   this.prixMoyeneOperation = data.prix;
+    // })
+
+    this.prixMoyeneOperation = 3850;
+  }
+
+  LabelDiagnosis="";
 }

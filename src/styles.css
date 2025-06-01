@@ -51,7 +51,7 @@
  @media (min-width: 768px) {
      #page-wrapper {
          position: inherit;
-         margin: 60px 250px 0 0;
+         margin: 60px 210px 0 0;
          padding: 0 15px;
          border-left: 1px solid #e7e7e7;
      }
@@ -165,7 +165,7 @@
      .sidebar {
          z-index: 1;
          position: absolute;
-         width: 250px;
+         width: 210px;
          margin-top: 51px;
      }
      .navbar-top-links .dropdown-messages,
@@ -621,7 +621,7 @@
  }
  
  .wide-page {
-     margin-right: 235px !important;
+     margin-right: 210px !important;
  }
  
  .showingSpan {
@@ -629,7 +629,7 @@
  }
  
  .WidthSideBar {
-     width: 250px !important;
+     width: 210px !important;
      transition: all 0.5s ease;
  }
  
@@ -647,7 +647,7 @@
  }
  
  #wrapper.tt-toggled .sidebar:hover {
-     width: 250px !important;
+     width: 210px !important;
  }
  
  #wrapper.tt-toggled .sidebar-brand {
