@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { ControlServiceAlertify } from '../../Shared/Control/ControlRow';
 import { CalanderTransService } from '../../Shared/CalanderService/CalanderTransService';
 import { InputValidationService } from '../../Shared/Control/ControlFieldInput';
@@ -6,9 +6,10 @@ import { ConfirmationService, MenuItem, MessageService, PrimeNGConfig } from 'pr
 import { DatePipe } from '@angular/common';
 import { I18nService } from '../../Shared/i18n/i18n.service';
 import { Router } from '@angular/router';
-import { ReceptionService } from '../ServiceClient/reception.service'; 
+import { ReceptionService } from '../ServiceClient/reception.service';
 import { ParametrageService } from '../../parametrage/ServiceClient/parametrage.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { TabView } from 'primeng/tabview';
 
 @Component({
   selector: 'app-ajout-admission',
@@ -16,8 +17,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   styleUrls: ['./ajout-admission.component.css', '.../../../src/assets/css/StyleApplication.css'],
   providers: [ConfirmationService, MessageService, InputValidationService, CalanderTransService, ControlServiceAlertify]
 })
-export class AjoutAdmissionComponent implements OnInit {
-
+export class AjoutAdmissionComponent implements OnInit   {
+ 
+ 
+  selctedOptions =false;
   AraiaDis: boolean = false;
   HeaderListPatient = '';
   HeaderRecherchePatient = '';
@@ -38,7 +41,7 @@ export class AjoutAdmissionComponent implements OnInit {
   visibleModal = false;
   constructor(private fb: FormBuilder, private CtrlAlertify: ControlServiceAlertify, private calandTrans: CalanderTransService,
     private datePipe: DatePipe, private validationService: InputValidationService,
-    public i18nService: I18nService, private router: Router,   private primengConfig: PrimeNGConfig,
+    public i18nService: I18nService, private router: Router, private primengConfig: PrimeNGConfig,
     private cdr: ChangeDetectorRef, private recept_service: ReceptionService, private param_service: ParametrageService) {
     this.calandTrans.setLangAR();
 
@@ -97,7 +100,7 @@ export class AjoutAdmissionComponent implements OnInit {
     this.formCornealOperation = this.fb.group({
       text: ['', Validators.required] // Add validators as needed
     });
-/////////  diagnosis
+    /////////  diagnosis
     this.formDiagnosis = this.fb.group({
       text: ['', Validators.required] // Add validators as needed
     });
@@ -110,7 +113,7 @@ export class AjoutAdmissionComponent implements OnInit {
     this.formchiefComplaint = this.fb.group({
       text: ['', Validators.required] // Add validators as needed
     });
-     
+
 
 
   }
@@ -171,12 +174,12 @@ export class AjoutAdmissionComponent implements OnInit {
 
 
   // }
-  HeaderAddPatient="";
-  HeaderPatientSelected="";
-  newGender= new Array<any>();
+  HeaderAddPatient = "";
+  HeaderPatientSelected = "";
+  newGender = new Array<any>();
   dateVisite: any = null;
   newTypeVisite = new Array<any>();
-  dataVisite= new Array<any>();
+  dataVisite = new Array<any>();
   selectedNewTypeVisite = null;
   nomFullArSelected = '';
   codePatientSelected = '';
@@ -219,7 +222,8 @@ export class AjoutAdmissionComponent implements OnInit {
 
 
 
-
+    this.nomFullArSelected = "";
+    this.codePatientSelected = "";
 
     const button = document.createElement('button');
     button.type = 'button';
@@ -250,8 +254,12 @@ export class AjoutAdmissionComponent implements OnInit {
 
       ]
 
+
+      this.ListRSLTClinique = [
+        { value: 'CLINIC TEST', label: 'CLINIC TEST' },
+      ]
       this.dataVisite = [
-        { code: '1', dateVisite: this.datePipe.transform(this.dateVisite, "yyyy-MM-dd"), typeVisite: this.newTypeVisite[0].value },
+        { code: '1', dateVisite: this.datePipe.transform(this.dateVisite, "yyyy-MM-dd"), typeVisite: this.newTypeVisite[0].value  , currentClinique:''},
       ]
 
       this.dataPatient = [
@@ -316,7 +324,7 @@ export class AjoutAdmissionComponent implements OnInit {
   ListRSLTOperation = new Array<any>();
   rightEyePressure = '';
   leftEyePressure = '';
-  prixMoyeneOperation :any= '';
+  prixMoyeneOperation: any = '';
   commentLeftEye = '';
   commentLeftEyeFundus = '';
   commentRightEye = '';
@@ -446,7 +454,7 @@ export class AjoutAdmissionComponent implements OnInit {
     this.visibleModal = false;
     this.visibleModalAddPatient = false;
     this.visibleModalNewAdmission = false;
-    this.visibleModalAddAdmissionOperation = false; 
+    this.visibleModalAddAdmissionOperation = false;
     const button = document.createElement('button');
     button.type = 'button';
     button.style.display = 'none';
@@ -575,68 +583,86 @@ export class AjoutAdmissionComponent implements OnInit {
 
 
 
-    }    
+    }
 
     if (mode === 'ouvrirAdmissionOperation') {
-      button.setAttribute('data-target', '#ModalAddAdmissionOperation');
-      this.formHeader = this.i18nService.getString('OpenFileOperation');
-      console.log('okkkk');
-      this.visibleModalAddAdmissionOperation = true;
-      this.visibleModalNewAdmission = false; 
-      this.visibleModalAddPatient = false;
 
 
-      this.LabelDetailsOperation = this.i18nService.getString('LabelDetailsOperation');
-      this.LabelDiagnosisOperation = this.i18nService.getString('LabelDiagnosisOperation');
-
-
-      // load data from old modal  
-      this.areaOptometryOperation = 'OD Optometry : ' + this.rightEye + '\n' +
-        'OS Optometry : ' + this.leftEye + '\n' +
-        'Comment OD Optometry : ' + this.commentRightEye.trim() + '\n' +
-        'Comment OS Optometry : ' + this.commentLeftEye.trim();
-
-
-      this.areaPressureOperation = 'OD Pressure : ' + this.rightEyePressure + ' mmHG' + '\n' +
-        'OS Pressure : ' + this.leftEyePressure + ' mmHG' + '\n';
-
-      const selectedLeftFundus = this.ListRSLTFundus.find(item => item.value === this.selectedRSLTFundusLeft);
-      const selectedRightFundus = this.ListRSLTFundus.find(item => item.value === this.selectedRSLTFundusRight);
-      this.areaFundusOperation = 'OD Fundus : ' + (selectedRightFundus?.label ?? '') + '\n' +
-        'OS Fundus : ' + (selectedLeftFundus?.label ?? '') + '\n' +
-        'Comment OD Fundus : ' + (this.commentRightEyeFundus ?? '') + '\n' +
-        'Comment OS Fundus : ' + (this.commentLeftEyeFundus ?? '') + '\n'
+      if (this.selectedCliniqueReqOperation == null || this.selectedCliniqueReqOperation == undefined || this.selectedCliniqueReqOperation == '' || this.dateOperation == null || this.selectedOperation == null || this.selectedOperation == '') {
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.showNotificationِCustom('CliniqueOrDateOperationRequired');
  
-      this.selectedCliniqueOperation = this.selectedCliniqueReqOperation;
-      this.nomFullArOperation = this.nomFullArAdm ?? '';
-      this.codePatientOperation = this.CodePatientAdm ?? '';
-      this.dateOperationFixed = this.dateOperation;
+        this.visibleModalAddAdmissionOperation = false;
+        this.visibleModalNewAdmission = true;
+        this.visibleModalAddPatient = false;
+        return;
+
+      } else {
+        button.setAttribute('data-target', '#ModalAddAdmissionOperation');
+        this.formHeader = this.i18nService.getString('OpenFileOperation');
+        console.log('okkkk');
+        this.visibleModalAddAdmissionOperation = true;
+        this.visibleModalNewAdmission = false;
+        this.visibleModalAddPatient = false;
 
 
-      this.areaCornealOperation = this.dataCorneal.map(item =>
-        `Eye: ${item.eye}  K1: ${item.k1 ?? ''}  D , K2: ${item.k2 ?? ''} D  , Axis: ${item.axis ?? ''} ° , Commentaire: ${item.commentaire ?? ''}\n`
-      ).join('');
-    }  
+        this.LabelDetailsOperation = this.i18nService.getString('LabelDetailsOperation');
+        this.LabelDiagnosisOperation = this.i18nService.getString('LabelDiagnosisOperation');
 
-    this.age = '36';
-    this.newCodeSaisieAdmOperation = 'AD0250023902'
-    
-   
+
+        // load data from old modal  
+        this.areaOptometryOperation = 'OD Optometry : ' + this.rightEye + '\n' +
+          'OS Optometry : ' + this.leftEye + '\n' +
+          'Comment OD Optometry : ' + this.commentRightEye.trim() + '\n' +
+          'Comment OS Optometry : ' + this.commentLeftEye.trim();
+
+
+        this.areaPressureOperation = 'OD Pressure : ' + this.rightEyePressure + ' mmHG' + '\n' +
+          'OS Pressure : ' + this.leftEyePressure + ' mmHG' + '\n';
+
+        const selectedLeftFundus = this.ListRSLTFundus.find(item => item.value === this.selectedRSLTFundusLeft);
+        const selectedRightFundus = this.ListRSLTFundus.find(item => item.value === this.selectedRSLTFundusRight);
+        this.areaFundusOperation = 'OD Fundus : ' + (selectedRightFundus?.label ?? '') + '\n' +
+          'OS Fundus : ' + (selectedLeftFundus?.label ?? '') + '\n' +
+          'Comment OD Fundus : ' + (this.commentRightEyeFundus ?? '') + '\n' +
+          'Comment OS Fundus : ' + (this.commentLeftEyeFundus ?? '') + '\n'
+
+        this.selectedCliniqueOperation = this.selectedCliniqueReqOperation;
+        this.nomFullArOperation = this.nomFullArAdm ?? '';
+        this.codePatientOperation = this.CodePatientAdm ?? '';
+        this.dateOperationFixed = this.dateOperation;
+
+
+        this.areaCornealOperation = this.dataCorneal.map(item =>
+          `Eye: ${item.eye}  K1: ${item.k1 ?? ''}  D , K2: ${item.k2 ?? ''} D  , Axis: ${item.axis ?? ''} ° , Commentaire: ${item.commentaire ?? ''}\n`
+        ).join('');
+
+        this.age = '36';
+        this.newCodeSaisieAdmOperation = 'AD0250023902'
+      }
+
+
+
+
+    }
+
+
+
 
   }
 
 
-  openModalAdmissionOperation(mode : string){
- 
+  openModalAdmissionOperation(mode: string) {
+
     const button = document.createElement('button');
     button.type = 'button';
     button.style.display = 'none';
-    
-    
+
+
 
   }
 
-  ReturnModal(mode : string){ 
+  ReturnModal(mode: string) {
     const button = document.createElement('button');
     button.type = 'button';
     button.style.display = 'none';
@@ -681,9 +707,9 @@ export class AjoutAdmissionComponent implements OnInit {
 
   clearForm() {
     this.visibleModalNewAdmission = false;
-    this.codePatientSelected= '';
+    this.codePatientSelected = '';
     this.nomFullArSelected = '';
-    this.SelectedPatientFromList=null;
+    this.SelectedPatientFromList = null;
 
   }
 
@@ -740,7 +766,8 @@ export class AjoutAdmissionComponent implements OnInit {
   }
 
   DateTempNew: any;
-
+  
+  selectedCliniqueCurrent=null;
   LabelOptometry = "";
   LabelDiagnosisOperation = "";
   LabelDetailsOperation = "";
@@ -768,7 +795,7 @@ export class AjoutAdmissionComponent implements OnInit {
   dataCorneal = new Array<any>();
 
   dateOperation: any;
-  dateOperationFixed: any;
+  dateOperationFixed: any = null;
   DateTempNewOperation: any;
   transformDateFormatOperation() {
     this.dateOperation = this.datePipe.transform(this.dateOperation, "yyyy-MM-dd")
@@ -855,11 +882,15 @@ export class AjoutAdmissionComponent implements OnInit {
       code: this.dataVisite.length + 1, // Assign a new code (adjust as needed)
       dateVisite: '',         // Set default date to today
       typeVisite: '',                    // Initialize typeVisite (will be updated by the dropdown)
+      currentClinique: '',                    // Initialize typeVisite (will be updated by the dropdown)
     };
     this.dataVisite.push(newRow);
   }
 
   openModal(mode: string, index: number) {
+    // this.SelectedPatientFromList= '';
+    this.codePatientSelected == "";
+    this.nomFullArSelected == "";
     this.selectedVisiteRowIndex = index;
     this.visibleModalNewAdmission = false;
     this.visibleModalRecherPatient = false;
@@ -868,19 +899,19 @@ export class AjoutAdmissionComponent implements OnInit {
     button.type = 'button';
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
- 
+
 
     const patientSelectedFromList = this.SelectedPatientFromList && this.SelectedPatientFromList.codePatient && this.SelectedPatientFromList.nomFullAr;
 
-    console.log("  this.selectedVisiteRowIndex , ", this.selectedVisiteRowIndex);
+    // console.log("  this.selectedVisiteRowIndex , ", this.selectedVisiteRowIndex);
     if (patientSelectedFromList) {
       // Patient selected from the list
       this.CodePatientAdm = this.SelectedPatientFromList.codePatient;
-      this.nomFullArAdm = this.SelectedPatientFromList.nomFullAr;  
+      this.nomFullArAdm = this.SelectedPatientFromList.nomFullAr;
     } else if (this.codePatientNew && this.newNomFullAr) {
       // Patient data entered manually
       this.CodePatientAdm = this.codePatientNew;
-      this.nomFullArAdm = this.newNomFullAr; 
+      this.nomFullArAdm = this.newNomFullAr;
 
 
     } else {
@@ -893,7 +924,7 @@ export class AjoutAdmissionComponent implements OnInit {
 
     if (mode === 'selectPatientAdded') {
 
-      
+
       const isValid = this.validateAdmissionData(index);
       if (isValid) {
         this.visibleModalNewAdmission = true;
@@ -906,45 +937,46 @@ export class AjoutAdmissionComponent implements OnInit {
         this.LabelCorneal = this.i18nService.getString('LabelCorneal');
         this.LabelOperation = this.i18nService.getString('Operation');
         this.LabelDiagnosis = this.i18nService.getString('diagnosis');
-  
+        this.selectedCliniqueAdm = this.selectedCliniqueCurrent;
+
         this.ListRSLTFundus = [
           { value: '1', label: 'Positive' },
           { value: '2', label: 'Negative' },
         ]
-  
+
         this.dataCorneal = [
           { eye: 'OD ( اليمنى )', K1: '', K2: '', Axis: '', commentaire: '' },
           { eye: 'OS ( اليسرى )', K1: '', K2: '', Axis: '', commentaire: '' },]
-  
-  
+
+
         this.ListRSLTOperation = [
           { value: '1', label: 'OPERATION TEST' },
         ]
-  
+
         this.ListRSLTClinique = [
           { value: '1', label: 'CLINIC TEST' },
         ]
         this.columnsTabCorneal();
         this.onRowUnselect(event);
         this.clearSelected();
-  
+
         this.visibleModalNewAdmission = true;
         this.visibleModalAddPatient = false;
         sessionStorage.setItem("CodePatientTemp", this.SelectedPatientFromList);
         this.visibleModalRecherPatient = false;
         this.getCodeSaisieAdmissionOPD();
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
         this.code == undefined;
-  
-        
+
+
         this.selectedCliniqueAdm = null;
-  
-  
+
+
         this.commentLeftEye = '';
         this.commentLeftEyeFundus = '';
         this.commentRightEye = '';
@@ -958,42 +990,42 @@ export class AjoutAdmissionComponent implements OnInit {
         this.selectedCliniqueReqOperation = null;
         this.selectedOperation = null;
         this.prixMoyeneOperation = '';
-  
-  
+
+
         this.dataCorneal = [
           { eye: 'OD ( اليمنى )', K1: '', K2: '', Axis: '', commentaire: '' },
           { eye: 'OS ( اليسرى )', K1: '', K2: '', Axis: '', commentaire: '' },]
         this.formcommentLeftEye = this.fb.group({
           text: ['', Validators.required] // Add validators as needed
         });
-  
+
         this.formcommentRightEye = this.fb.group({
           text: ['', Validators.required] // Add validators as needed
         });
-  
+
         this.formcommentLeftEyeFundus = this.fb.group({
           text: ['', Validators.required] // Add validators as needed
         });
-  
+
         this.formcommentRightEyeFundus = this.fb.group({
           text: ['', Validators.required] // Add validators as needed
         });
-  
-  
+
+
         this.formFundusOperation = this.fb.group({
           text: ['', Validators.required] // Add validators as needed
         });
-  
-  
+
+
         this.formOptometryOperation = this.fb.group({
           text: ['', Validators.required] // Add validators as needed
         });
-  
-  
+
+
         this.formPressureOperation = this.fb.group({
           text: ['', Validators.required] // Add validators as needed
         });
-  
+
         this.formCornealOperation = this.fb.group({
           text: ['', Validators.required] // Add validators as needed
         });
@@ -1010,9 +1042,9 @@ export class AjoutAdmissionComponent implements OnInit {
         }); this.formReasonVisite = this.fb.group({
           text: ['', Validators.required] // Add validators as needed
         });
- 
-  
-        
+
+
+
       } else {
         this.visibleModalNewAdmission = false;
         this.visibleModalRecherPatient = true;
@@ -1020,20 +1052,20 @@ export class AjoutAdmissionComponent implements OnInit {
         this.CtrlAlertify.showNotificationِCustom("PleaseChoiseDateVisteOrTypeViste"); //Show alert for missing data
       }
 
-      this.codeSaisie ='OPD250938471'
+      this.codeSaisie = 'OPD250938471'
 
     } else if (mode === 'voirDetailsVisite') {
       // Handle 'voirDetailsVisite' mode
     }
   }
 
-  
+
   selectedVisiteRowIndex: number | null = null;
 
   validateAdmissionData(index: number): boolean {
     if (index >= 0 && index < this.dataVisite.length) {
       const rowData = this.dataVisite[index];
-      return rowData.dateVisite && rowData.typeVisite;  
+      return rowData.dateVisite && rowData.typeVisite && rowData.currentClinique; // Ensure all required fields are filled
     }
     return false; //Invalid index
   }
@@ -1044,7 +1076,7 @@ export class AjoutAdmissionComponent implements OnInit {
 
   }
 
-  LoadData(codePatient:any){
+  LoadData(codePatient: any) {
 
   }
 
@@ -1056,5 +1088,5 @@ export class AjoutAdmissionComponent implements OnInit {
     this.prixMoyeneOperation = 3850;
   }
 
-  LabelDiagnosis="";
+  LabelDiagnosis = "";
 }

@@ -276,6 +276,7 @@ const arI18n = {
  'RefractionLE':'قياس النظر بالعين اليسرى',
  'RefractionRE':'قياس النظر بالعين اليمنى',
  'loadDataFromMachine':'تحميل البيانات من الجهاز',
+ 'CliniqueOrDateOperationRequired':'الرجاء إختيار العيادة أو تاريخ العملية',
 };
 
 

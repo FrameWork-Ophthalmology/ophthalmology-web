@@ -622,6 +622,7 @@
  
  .wide-page {
      margin-right: 210px !important;
+     transition: all 0.5s ease;
  }
  
  .showingSpan {
@@ -648,6 +649,7 @@
  
  #wrapper.tt-toggled .sidebar:hover {
      width: 210px !important;
+     transition: all 0.5s ease;
  }
  
  #wrapper.tt-toggled .sidebar-brand {
