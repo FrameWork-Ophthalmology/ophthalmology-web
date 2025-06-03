@@ -4014,12 +4014,13 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .fc.fc-theme-standard .fc-toolbar .fc-button {
-    color: #fff;
-    background: #007bff;
-    border: 1px solid #007bff;
-    font-size: 1rem;
-    transition: background-color .15s, border-color .15s, box-shadow .15s;
-    border-radius: 4px
+    font-size: 13px;
+    direction: ltr;
+    border: 1px solid #adadad;
+    font-weight: bold;
+    margin-left: 5px;
+    color: #333;
+    background-color: #fff;
 }
 
 .fc.fc-theme-standard .fc-toolbar .fc-button:enabled:hover {
@@ -4076,26 +4077,31 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 .fc.fc-theme-standard .fc-toolbar .fc-button.fc-dayGridMonth-button,
 .fc.fc-theme-standard .fc-toolbar .fc-button.fc-timeGridWeek-button,
 .fc.fc-theme-standard .fc-toolbar .fc-button.fc-timeGridDay-button {
-    background: #6c757d;
-    border: 1px solid #6c757d;
-    color: #fff;
-    transition: background-color .15s, border-color .15s, box-shadow .15s
+    font-size: 13px;
+    direction: ltr;
+    border: 1px solid #adadad;
+    font-weight: bold;
+    margin-left: 5px;
+    color: #333;
+    background-color: #fff;
 }
 
 .fc.fc-theme-standard .fc-toolbar .fc-button.fc-dayGridMonth-button:hover,
 .fc.fc-theme-standard .fc-toolbar .fc-button.fc-timeGridWeek-button:hover,
 .fc.fc-theme-standard .fc-toolbar .fc-button.fc-timeGridDay-button:hover {
-    background: #5a6268;
-    border-color: #545b62;
-    color: #fff
+    background: #bbbbbb;
+    border-color: #7a7b7d;
+    color: #000000;
+    border-radius: 3px;
 }
 
 .fc.fc-theme-standard .fc-toolbar .fc-button.fc-dayGridMonth-button.fc-button-active,
 .fc.fc-theme-standard .fc-toolbar .fc-button.fc-timeGridWeek-button.fc-button-active,
 .fc.fc-theme-standard .fc-toolbar .fc-button.fc-timeGridDay-button.fc-button-active {
     background: #545b62;
-    border-color: #4e555b;
-    color: #fff
+    border-color: #7a7b7d;
+    color: #fff;
+    border-radius: 3px;
 }
 
 .fc.fc-theme-standard .fc-toolbar .fc-button.fc-dayGridMonth-button.fc-button-active:hover,
@@ -4103,7 +4109,8 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 .fc.fc-theme-standard .fc-toolbar .fc-button.fc-timeGridDay-button.fc-button-active:hover {
     background: #545b62;
     border-color: #4e555b;
-    color: #fff
+    color: #fff;
+    border-radius: 3px;
 }
 
 .fc.fc-theme-standard .fc-toolbar .fc-button.fc-dayGridMonth-button:not(:disabled):focus,
@@ -7747,4 +7754,48 @@ style attribute {
 
 .dropDownStyle {
     align-self: center;
+}
+
+@layer primeng {
+    .p-scrollpanel-wrapper {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        float: left;
+    }
+    .p-scrollpanel-content {
+        height: calc(100% + 18px);
+        width: calc(100% + 18px);
+        padding: 0 18px 18px 0;
+        position: relative;
+        overflow: auto;
+        box-sizing: border-box;
+    }
+    .p-scrollpanel-bar {
+        position: relative;
+        background: #c1c1c1;
+        border-radius: 3px;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.25s linear;
+    }
+    .p-scrollpanel-bar-y {
+        width: 9px;
+        top: 0;
+    }
+    .p-scrollpanel-bar-x {
+        height: 9px;
+        bottom: 0;
+    }
+    .p-scrollpanel-hidden {
+        visibility: calc(100% + 18px);
+    }
+    .p-scrollpanel:hover .p-scrollpanel-bar,
+    .p-scrollpanel:active .p-scrollpanel-bar {
+        opacity: 1;
+    }
+    .p-scrollpanel-grabbed {
+        user-select: none;
+    }
 }

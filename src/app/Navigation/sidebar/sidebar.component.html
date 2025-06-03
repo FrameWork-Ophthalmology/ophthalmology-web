@@ -261,12 +261,13 @@
                     <a [routerLink]="['/menu_parametrage']"><i class="fa fa-cog   fa-fw"></i> <span id="spanLabelSetting"
                             class="ttspan-fill">{{'Setting' | i18n:i18nService.currentLanguage}}</span> </a>
                 </li>
-                <!-- <li routerLinkActive="active">
-                    <a href="#">
+                <li routerLinkActive="active">
+                    <a [routerLink]="['/menu_planning']">
 
-                        <i class="fa-solid fa-chart-pie"></i>
-                        <span id="spanLabelSetting" class="ttspan-fill"> {{'Edition' | i18n:i18nService.currentLanguage}}</span></a>
-                </li> -->
+                        <!-- <i class="fa-solid fa-chart-pie"></i> -->
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span id="spanLabelPlanning" class="ttspan-fill"> {{'PlanningOperation' | i18n:i18nService.currentLanguage}}</span></a>
+                </li>
 
 
 
@@ -282,7 +283,7 @@
                     <a [routerLink]="['/check_sum']">
 
                         <i class="fa-solid fa-code-branch"></i>
-                        <span id="spanLabelSetting" class="ttspan-fill"> {{'CheckSum' | i18n:i18nService.currentLanguage}}</span></a>
+                        <span id="spanLabelCheckSum" class="ttspan-fill"> {{'CheckSum' | i18n:i18nService.currentLanguage}}</span></a>
                 </li>
             </ul>
 

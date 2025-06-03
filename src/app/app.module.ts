@@ -85,12 +85,15 @@ import { CustomDateFormatPipe } from './Shared/CommunFunction/CustomDateFormatPi
  import { SkeletonModule } from 'primeng/skeleton'; 
 import { CliniqueComponent } from './parametrage/clinique/clinique.component';
 import { OperationComponent } from './parametrage/operation/operation.component';
-import { TypeOperationComponent } from './parametrage/type-operation/type-operation.component';
 import { AjoutAdmissionComponent } from './reception/ajout-admission/ajout-admission.component';
 import { InputMaskModule } from 'primeng/inputmask';
 import { ListboxModule } from 'primeng/listbox'; 
 import { AdmissionComponent } from './menu-reception/admission/admission.component';
 import { EditionComponent } from './menu-edition/edition/edition.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { PlanningComponent } from './menu-planning/planning/planning.component';
+// import moment from 'moment';
+
 const languages = [
   { lang: 'عربي', flag: 'assets/images/county/ar.png', file: arI18n, valeur: 'ar' },
   { lang: 'English', flag: 'assets/images/county/eng.png', file: enI18n, valeur: 'en' },
@@ -131,7 +134,12 @@ AjoutAdmissionComponent,
 AdmissionComponent,
 
 //menu edition
-EditionComponent
+EditionComponent,
+
+
+/// menu Planning
+
+PlanningComponent
  
   ],
   imports: [   
@@ -150,8 +158,8 @@ EditionComponent
      ButtonModule, InputNumberModule, NoopAnimationsModule, // Needed for PrimeNG animations
        
     FormsModule, DialogModule, RadioButtonModule, 
-    CalendarModule, CheckboxModule, TabViewModule,MenubarModule ,ReportViewerModule
-
+    CalendarModule, CheckboxModule, TabViewModule,MenubarModule ,ReportViewerModule,FullCalendarModule
+ 
   ],
   // providers: [  provideHttpClient(withInterceptors([customInterceptor])),DatePipe, LoginComponent, LoadingComponent, HttpClient, MessageService,
     
@@ -160,6 +168,7 @@ EditionComponent
 
   providers: [  authInterceptorProviders,DatePipe, LoginComponent, LoadingComponent, HttpClient, MessageService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true ,  },
+   
     provideAnimationsAsync(),
   ],
 

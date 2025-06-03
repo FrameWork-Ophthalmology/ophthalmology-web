@@ -504,11 +504,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const spanLabelDashbord = document.getElementById('spanLabelDashbord');
     const spanLabelSetting = document.getElementById('spanLabelSetting');
     const spanLabelEdition = document.getElementById('spanLabelEdition');
+    const spanLabelPlanning = document.getElementById('spanLabelPlanning');
+    const spanLabelCheckSum = document.getElementById('spanLabelCheckSum');
 
 
 
 
-    if (wrapper && spanLabelEdition && sidebar && pageWrapper && span && sideNav && spanLabelMenu && spanLabelDashbord && spanLabelSetting) { //Check for null before adding event listener
+
+    if (wrapper && spanLabelEdition && spanLabelCheckSum && spanLabelPlanning && sidebar && pageWrapper && span && sideNav && spanLabelMenu && spanLabelDashbord && spanLabelSetting) { //Check for null before adding event listener
         sidebar.addEventListener('mousemove', () => {
             if (wrapper.classList.contains('tt-toggled')) {
                 pageWrapper.classList.add('wide-page');
@@ -518,6 +521,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 spanLabelDashbord.classList.add('showingSpan');
                 spanLabelSetting.classList.add('showingSpan');
                 spanLabelEdition.classList.add('showingSpan');
+                spanLabelPlanning.classList.add('showingSpan');
+                spanLabelCheckSum.classList.add('showingSpan');
             }
         });
 
@@ -529,6 +534,8 @@ document.addEventListener('DOMContentLoaded', function() {
             spanLabelDashbord.classList.remove('showingSpan');
             spanLabelSetting.classList.remove('showingSpan');
             spanLabelEdition.classList.remove('showingSpan');
+            spanLabelPlanning.classList.remove('showingSpan');
+            spanLabelCheckSum.classList.remove('showingSpan');
 
 
 

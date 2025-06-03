@@ -124,10 +124,12 @@ export class CheckSumComponent implements OnInit {
         },
         error: (error) => {
           console.error('Upload failed:', error);
+          this.xmlFile = undefined;  
           this.errorMessage = 'Upload failed: ' + error.error; // Display error message
         }
       });
     } else {
+      this.xmlFile = undefined;  
       this.errorMessage = 'Please select an XML file.'; // Display error message if no file selected
     }
   }
