@@ -13,5 +13,6 @@ export const environment = {
     API_EXMANE: "/examen/",
     
     API_DMI: "/dmi/",
+    New_API_CheckSum:"/newchecksum/"
   };
   

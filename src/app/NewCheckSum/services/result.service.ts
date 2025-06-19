@@ -1,6 +1,8 @@
 import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';  
+import { CheckSumServiceService } from '../ServiceClient/check-sum-service.service';
+import { environment } from '../../../environments/environment.development';
 export interface TomeyResult {
   id: number;
   measurementDate: string;
@@ -17,26 +19,27 @@ export interface TomeyResult {
   providedIn: 'root'
 })
 export class ResultService {
-
-  private baseUrl = 'http://localhost:5061/api';
-  
+ 
   // Use a BehaviorSubject to easily update the component
   private resultsSubject = new BehaviorSubject<TomeyResult[]>([]);
   public results$ = this.resultsSubject.asObservable();
 
-  constructor(private http: HttpClient, private zone: NgZone) {}
+  constructor( private zone: NgZone , private checkSumService : CheckSumServiceService) {}
 
   // Get all initial results
   loadInitialResults() {
-    this.http.get<TomeyResult[]>(`${this.baseUrl}/results`).subscribe(data => {
-      this.resultsSubject.next(data);
+    this.checkSumService.GetResultat().subscribe(data => {
+      this.resultsSubject.next(data.sort((a, b) => new Date(b.measurementDate).getTime() - new Date(a.measurementDate).getTime())); // Sort by date descending
     });
   }
-
   // Connect to the SSE stream
   getRealTimeUpdates(): EventSource {
-    return new EventSource(`${this.baseUrl}/subscribe`);
+    // Get the URL STRING from the service and pass it to EventSource
+    const sseUrl = this.checkSumService.subscribeUrl;
+    console.log(`Connecting to SSE stream at: ${sseUrl}`); // Good for debugging
+    return new EventSource(sseUrl);
   }
+
 
   // Add a new result received from SSE to our list
   addNewResult(result: TomeyResult) {

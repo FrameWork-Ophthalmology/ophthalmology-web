@@ -62,5 +62,12 @@
         "logLevel": "debug",
         "changeOrigin": true,
         "timeout": 360000
+    },
+    "/newchecksum": {
+        "target": "http://localhost:5061/api",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "timeout": 360000
     }
 }
