@@ -114,8 +114,9 @@ export class AjoutAdmissionComponent implements OnInit   {
     this.formchiefComplaint = this.fb.group({
       text: ['', Validators.required] // Add validators as needed
     });
-
-
+ // Set the minimum date (e.g., 100 years ago from today)
+    const today = new Date();
+    this.minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
 
   }
 
@@ -779,7 +780,7 @@ export class AjoutAdmissionComponent implements OnInit   {
   LabelCorneal = "";
   LabelOperation = "";
 
-
+  minDate: Date  = new Date(); 
 
   columnTabsCorneal!: any[];
   columnsTabCorneal() {

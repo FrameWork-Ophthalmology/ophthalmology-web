@@ -87,8 +87,7 @@ import { CliniqueComponent } from './parametrage/clinique/clinique.component';
 import { OperationComponent } from './parametrage/operation/operation.component';
 import { AjoutAdmissionComponent } from './reception/ajout-admission/ajout-admission.component';
 import { InputMaskModule } from 'primeng/inputmask';
-import { ListboxModule } from 'primeng/listbox'; 
-import { AdmissionComponent } from './menu-reception/admission/admission.component';
+import { ListboxModule } from 'primeng/listbox';  
 import { EditionComponent } from './menu-edition/edition/edition.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { PlanningComponent } from './menu-planning/planning/planning.component';
@@ -96,6 +95,7 @@ import { CliniqueLabelPipe } from './Shared/Pipe/CliniqueLabelPipe';
 import { FeuilleSoinComponent } from './menu-dmi/feuille-soin/feuille-soin.component';
 import { ListAdmissionOPDComponent } from './menu-dmi/list-admission-opd/list-admission-opd.component';
 import { RequestOPDComponent } from './menu-dmi/request-opd/request-opd.component';
+import { ResultatListComponent } from './NewCheckSum/resultat-list/resultat-list.component';
 // import moment from 'moment';
 
 const languages = [
@@ -134,8 +134,7 @@ const languages = [
 AjoutAdmissionComponent,
 
 
-   ///// menu reception
-AdmissionComponent,
+   ///// menu reception 
 
 //menu edition
 EditionComponent,
@@ -149,7 +148,7 @@ PlanningComponent,
 
 //// menu dmi 
 
-FeuilleSoinComponent,ListAdmissionOPDComponent,RequestOPDComponent,
+FeuilleSoinComponent,ListAdmissionOPDComponent,RequestOPDComponent, ResultatListComponent,
  
   ],
   imports: [   

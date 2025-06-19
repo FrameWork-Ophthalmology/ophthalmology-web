@@ -1,0 +1,36 @@
+<div class="container">
+    <h1>Tomey RC-800 Results</h1>
+    <p>Listening for new results from the machine...</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th rowspan="2">Date</th>
+                <th colspan="3">Right Eye (OD)</th>
+                <th colspan="3">Left Eye (OS)</th>
+                <th rowspan="2">PD</th>
+            </tr>
+            <tr>
+                <th>Sphere</th>
+                <th>Cylinder</th>
+                <th>Axis</th>
+                <th>Sphere</th>
+                <th>Cylinder</th>
+                <th>Axis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Use the async pipe to automatically subscribe/unsubscribe -->
+            <tr *ngFor="let result of results$ | async" [class.new-result]="result === (results$ | async)?.[0]">
+                <td>{{ result.measurementDate | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>{{ result.odSphere }}</td>
+                <td>{{ result.odCylinder }}</td>
+                <td>{{ result.odAxis }}</td>
+                <td>{{ result.osSphere }}</td>
+                <td>{{ result.osCylinder }}</td>
+                <td>{{ result.osAxis }}</td>
+                <td>{{ result.pupillaryDistance }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

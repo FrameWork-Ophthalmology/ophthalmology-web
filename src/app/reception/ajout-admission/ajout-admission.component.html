@@ -283,7 +283,7 @@
 
     </ng-template>
 
-    <div class="modal-body" style="height: 440px;">
+    <div class="modal-body" style="height: 488px;">
 
 
         <div class="flex-row-start flex-12">
@@ -1149,8 +1149,8 @@
                                 i18n:i18nService.currentLanguage}} : <i
                                     class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                             <div class="control-input flex-8 " style="align-self: center;">
-                                <p-calendar (keyup.enter)="transformDateFormatDateNaissance()" (onInput)="formatInputNewDateNaissance($event)" (onChange)="transformDateFormatDateNaissance()" (onSelect)="transformDateFormatDateNaissance()" [(ngModel)]="dateNaissance" [showButtonBar]="true"
-                                    appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+                                <p-calendar [minDate]="minDate" (keyup.enter)="transformDateFormatDateNaissance()" (onInput)="formatInputNewDateNaissance($event)" (onChange)="transformDateFormatDateNaissance()" (onSelect)="transformDateFormatDateNaissance()" [(ngModel)]="dateNaissance"
+                                    [showButtonBar]="true" appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
 
                             </div>
                         </div>

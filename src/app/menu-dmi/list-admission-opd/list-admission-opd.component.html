@@ -1,23 +1,5 @@
 <div class="list-admission-opd-content">
     <div class="card">
-        <!-- <p-treeTable [value]="files" [columns]="cols" selectionMode="single" [(selection)]="selectedNode" dataKey="code" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)" [scrollable]="true" [tableStyle]="{'min-width':'50rem'}">
-            <ng-template pTemplate="header" let-columns>
-                <tr>
-                    <th *ngFor="let col of columns">
-                        {{ col.header }}
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-                <tr [ttRow]="rowNode" [ttSelectableRow]="rowNode">
-                    <td *ngFor="let col of columns; let i = index">
-                        <p-treeTableToggler [rowNode]="rowNode" *ngIf="i === 0" /> {{ rowData[col.field] || '' }}
-                    </td>
-                </tr>
-            </ng-template>
-
-            
-        </p-treeTable> -->
 
         <p-table [value]="AdmissionOPD" dataKey="code" [columns]="colsParent" selectionMode="single" [(selection)]="selectedNode" [tableStyle]="{ 'min-width': '60rem' }" [expandedRowKeys]="expandedRows" (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)"
             (onRowSelect)="nodeSelect($event)" (onRowUnselect)="nodeUnselect($event)">
@@ -47,7 +29,6 @@
                     </td>
                     <td>{{ product.codeSaisie }}</td>
                     <td>{{ product.patientDTO.nomCompltLt}}</td>
-                    <!-- <td>{{ product.patientDTO.codeSaisie}}</td> -->
                     <td>
                         {{product.dateCreate | customDateFormat}}
                     </td>
@@ -82,12 +63,18 @@
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="6">There are no order for this product yet.</td>
+                                        <td colspan="6">Empty Data.</td>
                                     </tr>
                                 </ng-template>
                             </p-table>
                         </div>
                     </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="6">Empty Data.</td>
                 </tr>
             </ng-template>
         </p-table>

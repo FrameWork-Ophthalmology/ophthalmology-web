@@ -4,7 +4,7 @@
 
 :host ::ng-deep .ModalAddAdmission {
     width: 900px !important;
-    height: 552px !important;
+    height: 600px !important;
 }
 
 :host ::ng-deep .ModalAddAdmOperation {
