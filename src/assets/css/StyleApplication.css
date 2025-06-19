@@ -2928,3 +2928,32 @@ input[type="radio"]:disabled {
 .card {
     margin-top: 10px;
 }
+
+.fc .fc-daygrid-event {
+    margin-top: 1px;
+    z-index: 6;
+    background: #0069d9;
+    color: white !important;
+}
+
+:host ::ng-deep .fc-direction-ltr .fc-daygrid-event.fc-event-end,
+.fc-direction-rtl .fc-daygrid-event.fc-event-start {
+    background: #0069d9;
+    color: white;
+}
+
+:host ::ng-deep .fc-direction-ltr .fc-daygrid-event.fc-event-end,
+.fc-direction-rtl .fc-daygrid-event.fc-event-start .i {
+    padding-left: 10px;
+}
+
+:host ::ng-deep.fc-event i {
+    padding-left: 5px;
+    font-style: normal;
+}
+
+:host ::ng-deep .fc-dayGridMonth-view .fc-col-header-cell-cushion {
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 5ch;
+}

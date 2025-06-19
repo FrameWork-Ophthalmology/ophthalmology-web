@@ -11,6 +11,10 @@ export const environment = {
     API_PHARMACIE: 'http://' + hostName + ':5061/api/pharmacie/',
     API_DOCTOR: 'http://' + hostName + ':5061/api/doctor/',
     API_CHECKSUM: 'http://' + hostName + ':5061/api/checksum/',
+    
+    API_EXMANE: "/examen/",
+    
+    API_DMI: "/dmi/",
     adressIP: Server,
 
 };

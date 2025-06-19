@@ -1,13 +1,10 @@
 import { Component , signal, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventApi, globalLocales } from '@fullcalendar/core';
+import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list'; 
-import { createEventId, INITIAL_EVENTS } from './INITIAL_EVENTS';
+import { INITIAL_EVENTS } from './INITIAL_EVENTS';
 // import { locales } from '@fullcalendar/core'; //Import the locales plugin
 @Component({
   selector: 'app-planning',
@@ -33,11 +30,13 @@ export class PlanningComponent {
     weekends: true,
     editable: true,
     selectable: true,
-    selectMirror: true, 
-    // dayHeaderFormat: { weekday: 'short' }, 
+    selectMirror: true,  
     // businessHours: {  startTime: '06:00', endTime: '22:00' }, // display business hours
     dayMaxEvents: true,
-    locale: 'fr',
+    locale: 'en-GB', // Specify the locale here for consistent formatting
+    dayHeaderFormat: { weekday: 'long', month: 'numeric', day: 'numeric'  }, // Use built-in format for day header
+    firstDay: 6,
+    businessHours: this.getBusinessHours(),
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this)
@@ -47,25 +46,16 @@ export class PlanningComponent {
     eventRemove:
     */
   });
+  getBusinessHours(): CalendarOptions['businessHours'] {
+    // All days except Friday (day 5) are considered business hours
+    return { daysOfWeek: [0, 1, 2, 3, 4, 6] ,startTime: '06:00', endTime: '23:00' }; // 6am to 10pm
+  }
+  
   currentEvents = signal<EventApi[]>([]);
 
   constructor(private changeDetector: ChangeDetectorRef) {
   }
-
-  // getBusinessHours(): CalendarOptions['businessHours'] {
-  //   const isWeekends = this.calendarOptions().weekends;
-  //   return isWeekends ? { daysOfWeek: [0, 1, 2, 3, 4, 6] } : { daysOfWeek: [0, 1, 2, 3, 4] };
-  // }
-  
-  // getBusinessHourss() :CalendarOptions['businessHours'] {
-  //   return {
-  //     daysOfWeek: [0,1, 2, 3, 4, 5], // Monday - Friday
-  //     startTime: '08:00', // 8am
-  //     endTime: '18:00', // 6pm
-
-  //   }
-  // }
-
+ 
   
   handleCalendarToggle() {
     this.calendarVisible.update((bool) => !bool);
@@ -99,10 +89,11 @@ export class PlanningComponent {
   }
 
   handleEventClick(clickInfo: EventClickArg) {
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+    if (confirm(`Open Details Of event '${clickInfo.event.title}'`)) {
       // clickInfo.event.remove();
     }
 
+    console.log("Open Details Of event '${clickInfo.event.title}" , clickInfo.event.startStr);
     console.log("event Clicked Open Details");
   }
 

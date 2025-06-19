@@ -98,11 +98,13 @@ export class AppComponent implements OnInit {
     this.ngZone.runOutsideAngular(() => {
       const pageWrapper = document.querySelector('.page-wrapper') as HTMLElement;
       if (pageWrapper) {
-        if (url.startsWith('/dossier_medical_opd') || url === '/login') {
+        if (url.startsWith('/menu_dmi') || url === '/login') {
           pageWrapper.style.marginRight = '0px';
           pageWrapper.style.marginLeft = '0px';
           pageWrapper.style.marginTop = '0px';
           pageWrapper.style.marginBottom = '0px';
+          pageWrapper.style.position = 'relative';
+
         } else {
           pageWrapper.style.marginRight = '';
           pageWrapper.style.marginLeft = '';
@@ -118,7 +120,7 @@ export class AppComponent implements OnInit {
   showHideComponents(url: string) {
 
 
-    const hideComponents = url.startsWith('/dossier_medical_opd');
+    const hideComponents = url.startsWith('/menu_dmi');
     this.showSidebar = !hideComponents;
     this.showTopBar = !hideComponents;
     this.showFooter = !hideComponents;

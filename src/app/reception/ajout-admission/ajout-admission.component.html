@@ -349,13 +349,13 @@
                     <p-tabView [style]="{'width':'870px'}" #tabView>
 
                         <p-tabPanel [header]="LabelDiagnosis">
-                            <div class="flex-row-start flex-12" style="display: flex;">
+                            <!-- <div class="flex-row-start flex-12" style="display: flex;">
                                 <label class="control-label flex-12"> {{'diagnosis' |
                                     i18n:i18nService.currentLanguage}}
                                     : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
 
-                            </div>
-
+                            </div> -->
+                            <br>
                             <div class="flex-row-start flex-12" style="display: flex;">
                                 <label class="control-label flex-14"> {{'chiefComplaint' |
                                     i18n:i18nService.currentLanguage}} : </label>
@@ -622,7 +622,7 @@
 
                         </p-tabPanel>
                         <p-tabPanel [header]="LabelOperation">
-                            <div class="flex-row-start flex-12" style="display: flex;">
+                            <!-- <div class="flex-row-start flex-12" style="display: flex;">
                                 <label class="control-label flex-4"> {{'Operation' |
                                     i18n:i18nService.currentLanguage}}
                                     : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
@@ -631,7 +631,8 @@
                                 </div>
 
 
-                            </div>
+                            </div> -->
+                            <br>
                             <div class="flex-row-start flex-12" style="display: flex;">
 
 
@@ -646,7 +647,7 @@
 
                                 </section>
                                 <section class="flex-row-start flex-6 ">
-                                    <label class="control-label flex-4"> {{'Clinique' |
+                                    <label class="control-label flex-4"> {{'CliniqueOperation' |
                                         i18n:i18nService.currentLanguage}} :<i
                                             class="fa-lg fa-fw fa fa-times icon-required"></i></label>
                                     <div class="control-input flex-60" style="padding: 0px ; align-content: center;">
@@ -803,7 +804,7 @@
                 </div>
                 <div class="flex-row-start flex-12">
                     <section class="flex-row-start flex-6 ">
-                        <label class="control-label flex-4 ">{{'Clinique' | i18n:i18nService.currentLanguage}} : <i
+                        <label class="control-label flex-4 ">{{'CliniqueOperation' | i18n:i18nService.currentLanguage}} : <i
                                 class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                         <div class="control-input flex-5-45">
                             <p-dropdown name="clinique" [filter]="true" appendTo="body" [options]="ListRSLTClinique" [(ngModel)]="selectedCliniqueOperation" [style]="{'width':'200px'}" [autoDisplayFirst]="true" placeholder="&nbsp;" [required]="true" [lazy]="true" #clinique="ngModel">
@@ -829,12 +830,13 @@
                 <div class="flex-row-start flex-12">
                     <p-tabView [style]="{'width':'765px'}">
                         <p-tabPanel [header]="LabelDiagnosisOperation">
-                            <div class="flex-row-start flex-12" style="display: flex;">
+                            <!-- <div class="flex-row-start flex-12" style="display: flex;">
                                 <label class="control-label flex-12"> {{'LabelDiagnosisOperation' |
                                     i18n:i18nService.currentLanguage}}
                                     : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
 
-                            </div>
+                            </div> -->
+                            <br>
                             <div class="flex-row-start flex-12" style="display: flex;">
                                 <label class="control-label flex-14"> {{'ProbMedicaux' |
                                     i18n:i18nService.currentLanguage}} : </label>
@@ -886,11 +888,11 @@
 
                         </p-tabPanel>
                         <p-tabPanel [header]="LabelDetailsOperation">
-                            <div class="flex-row-start flex-12" style="display: flex;">
+                            <!-- <div class="flex-row-start flex-12" style="display: flex;">
                                 <label class="control-label flex-4"> {{'LabelPressure' |
                                     i18n:i18nService.currentLanguage}}
                                     : <i class="fa-lg fa-fw fa fa-times icon-required"></i></label>
-                            </div>
+                            </div> -->
 
                             <br>
                             <div class="flex-row-start flex-12" style="display: flex;">
@@ -1137,7 +1139,7 @@
                                 i18n:i18nService.currentLanguage}} : <i
                                     class="fa-lg fa-fw fa fa-times iconRequired"></i></label>
                             <div class="control-input flex-8 ">
-                                <input id="NewAge" #NewAgeNewInput maxlength="3" name="NewAge" type="number" class=" form-control-dev input-xs" required [(ngModel)]="newAge">
+                                <input id="NewAge" #NewAgeNewInput maxlength="3" name="NewAge" type="number" class=" form-control-dev input-xs" required [(ngModel)]="newAge" (ngModelChange)="onAgeChange()">
 
                             </div>
                         </div>
@@ -1231,7 +1233,7 @@
                                                 <ng-template pTemplate="input">
 
                                                     <p-calendar (keyup.enter)="transformDateFormatDateVisite()" (onInput)="formatInputNewDateVisite($event)" (onChange)="transformDateFormatDateVisite()" (onSelect)="transformDateFormatDateVisite()" [(ngModel)]="dateVisites.dateVisite" [showButtonBar]="true"
-                                                        appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="true" inputId="icondisplay"></p-calendar>
+                                                        appendTo="body" [iconDisplay]="'input'" #calendar dateFormat="yy-mm-dd" [readonlyInput]="false" [showIcon]="false" inputId="icondisplay"></p-calendar>
 
 
                                                 </ng-template>
@@ -1244,11 +1246,11 @@
                                             <p-cellEditor>
                                                 <ng-template pTemplate="input">
 
-                                                    <p-dropdown [options]="newTypeVisite" appendTo="body" [(ngModel)]="dataVisite[ri].typeVisite" [style]="{'width':'100%'}" (onChange)="addNewRow()" />
+                                                    <p-dropdown [options]="newTypeVisite" appendTo="body" [(ngModel)]="dataVisite[ri].typeVisite" [style]="{'width':'100%'}" />
 
                                                 </ng-template>
                                                 <ng-template pTemplate="output">
-                                                    {{ dateVisites.typeVisite }}
+                                                    {{ dateVisites.typeVisite | GetLabel:newTypeVisite }}
                                                 </ng-template>
                                             </p-cellEditor>
                                         </td>
@@ -1256,12 +1258,11 @@
                                         <td [pEditableColumn]="dateVisites.currentClinique" pEditableColumnField="currentClinique">
                                             <p-cellEditor>
                                                 <ng-template pTemplate="input">
-
-                                                    <p-dropdown [options]="ListRSLTClinique" appendTo="body" [(ngModel)]="dataVisite[ri].currentClinique" [style]="{'width':'100%'}" (onChange)="addNewRow()" />
-
+                                                    <p-dropdown [options]="ListRSLTClinique" appendTo="body" [(ngModel)]="dataVisite[ri].currentClinique" [style]="{'width':'100%'}" (onChange)="addNewRow()" optionLabel="label" optionValue="value" />
                                                 </ng-template>
                                                 <ng-template pTemplate="output">
-                                                    {{ dateVisites.currentClinique }}
+                                                    {{ dataVisite[ri].currentClinique | GetLabel:ListRSLTClinique }}
+                                                    <!-- Custom Pipe -->
                                                 </ng-template>
                                             </p-cellEditor>
                                         </td>
@@ -1269,7 +1270,7 @@
 
                                             <button style="margin-left:5px" pButton type="button" pDeleteEditableRow icon="pi pi-backward " class="p-button-item-eye " data-original-title="DetailsAdmission" data-toggle="modal" data-target="#ModalDetailsAdmission" (click)="openModal('selectPatientAdded',ri) "></button>
 
-                                            <button style="margin-right:5px" pButton type="button" pDeleteEditableRow icon="pi pi-eye" class="p-button-item-eye " data-original-title="DetailsAdmission" data-toggle="modal" data-target="#ModalDetailsAdmission" (click)="openModal('dateVisites',ri) "></button>
+                                            <button style="margin-right:5px" *ngIf="ri !== 0" pButton type="button" pDeleteEditableRow icon="pi pi-eye" class="p-button-item-eye " data-original-title="DetailsAdmission" data-toggle="modal" data-target="#ModalDetailsAdmission" (click)="openModal('dateVisites',ri) "></button>
 
                                             <button style="margin-right:5px" *ngIf="ri !== 0" pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="p-button-item " (click)="removeRow(ri) "></button>
 

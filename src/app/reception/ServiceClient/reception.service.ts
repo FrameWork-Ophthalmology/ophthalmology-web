@@ -36,4 +36,39 @@ export class ReceptionService {
   PostPatient(body: any) {
     return this.http.post(`${environment.API_RECEPTION}patient`, body);
   } 
+
+
+  
+  //// Admission
+  GetAdmission(): Observable<any> {
+
+    return this.http.get(`${environment.API_RECEPTION}admission/all` )
+  }
+
+  GetAdmissionByCode(code:number): Observable<any> {
+
+    return this.http.get(`${environment.API_RECEPTION}admission/`+code )
+  }
+
+
+  GetAdmissionByCodeNatureAdmission(codeNatureAdmission : any): Observable<any> {
+
+    return this.http.get(`${environment.API_RECEPTION}admission/findByCodeNatureAdmission?codeNatureAdmission=`+codeNatureAdmission )
+  }
+
+  GetAdmissionForOPD(): Observable<any> {
+
+    return this.http.get(`${environment.API_RECEPTION}admission/findForOPD` )
+  }
+
+
+  GetAdmissionByCodePatient(codePatient : any): Observable<any> {
+
+    return this.http.get(`${environment.API_RECEPTION}admission/findByCodePatient?codePatient=`+codePatient )
+  }
+  GetAdmissionByCodeNatureAdmissionAndCodeMedecin(codeNatureAdmission : any,codeMedecin : any): Observable<any> {
+
+    return this.http.get(`${environment.API_RECEPTION}admission/findByCodeNatureAdmission?codeNatureAdmission=`+codeNatureAdmission `&codeMedecin=`+codeMedecin )
+  }
+
 }

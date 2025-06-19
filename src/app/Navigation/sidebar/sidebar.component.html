@@ -280,6 +280,15 @@
 
 
                 <li routerLinkActive="active">
+                    <a [routerLink]="['/menu_dmi']">
+
+                        <i class="fa-solid fa-file-medical-alt"></i>
+                        <span id="spanLabelEdition" class="ttspan-fill"> {{'DossierMedical' | i18n:i18nService.currentLanguage}}</span></a>
+                </li>
+
+
+
+                <li routerLinkActive="active">
                     <a [routerLink]="['/check_sum']">
 
                         <i class="fa-solid fa-code-branch"></i>

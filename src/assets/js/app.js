@@ -2,7 +2,6 @@ $(function() {
 
         "use strict";
 
-
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
             $("html").attr("class", savedTheme);
@@ -563,3 +562,18 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('One or more elements not found. Check your IDs.');
     }
 });
+
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     setTimeout(() => {
+//         console.log('eeeeee')
+//         const headerCells = document.querySelectorAll('.fc-col-header-cell-cushion');
+//         headerCells.forEach(cell => {
+//             let text = cell.textContent;
+//             if (text) {
+//                 const dayName = text.split(',')[0].trim();
+//                 cell.textContent = dayName;
+//             }
+//         });
+//     }, 1500); // Adjust the delay (in milliseconds) as needed.  500ms is a starting point.
+// });

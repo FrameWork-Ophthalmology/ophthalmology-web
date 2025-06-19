@@ -92,6 +92,10 @@ import { AdmissionComponent } from './menu-reception/admission/admission.compone
 import { EditionComponent } from './menu-edition/edition/edition.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { PlanningComponent } from './menu-planning/planning/planning.component';
+import { CliniqueLabelPipe } from './Shared/Pipe/CliniqueLabelPipe';
+import { FeuilleSoinComponent } from './menu-dmi/feuille-soin/feuille-soin.component';
+import { ListAdmissionOPDComponent } from './menu-dmi/list-admission-opd/list-admission-opd.component';
+import { RequestOPDComponent } from './menu-dmi/request-opd/request-opd.component';
 // import moment from 'moment';
 
 const languages = [
@@ -119,7 +123,7 @@ const languages = [
     CustomSelectComponent, AppComponent,MenuActiveDirective,
     DashboardComponent,  UserCompoComponent, BreadcrumbComponent,SidebarComponent,
     TopBarComponent, LoadingComponent, ToFixedRoundPipe, 
-    FooterComponent, AlertComponent, LoginComponent,ModalContentComponent, I18nPipe,  CustomDateFormatPipe 
+    FooterComponent, AlertComponent, LoginComponent,ModalContentComponent, I18nPipe,  CustomDateFormatPipe ,CliniqueLabelPipe
  
 
     ///// menu parametarge
@@ -139,7 +143,13 @@ EditionComponent,
 
 /// menu Planning
 
-PlanningComponent
+PlanningComponent,
+
+
+
+//// menu dmi 
+
+FeuilleSoinComponent,ListAdmissionOPDComponent,RequestOPDComponent,
  
   ],
   imports: [   

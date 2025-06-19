@@ -14,6 +14,7 @@ const routes: Routes = [
   { path: 'menu_reception', loadChildren: () => import('./menu-reception/menu-reception.module').then(m => m.MenuReceptionModule), data:{title:'Reception',icon:'fas fa-sitemap'} },
   { path: 'menu_edition', loadChildren: () => import('./menu-edition/menu-edition.module').then(m => m.MenuEditionModule), data:{title:'Edition',icon:'fas fa-chart-pie'} },
   { path: 'menu_planning', loadChildren: () => import('./menu-planning/menu-planning.module').then(m => m.MenuPlanningModule) , data:{title:'PlanningOperation',icon:'fas fa-calendar-days'}},
+  { path: 'menu_dmi', loadChildren: () => import('./menu-dmi/menu-dmi.module').then(m => m.MenuDMIModule) , data:{title:'DossierMedical',icon:'bx bx-first-aid'}  },
 
  ];
 

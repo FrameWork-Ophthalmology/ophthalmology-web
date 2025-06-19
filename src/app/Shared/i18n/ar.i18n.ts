@@ -223,6 +223,7 @@ const arI18n = {
  'prestations':'الخدمات',
 
  'Clinique':'العيادة',
+ 'CliniqueOperation':'عيادة العملية',
  'NewFile':'فتح ملف',
  'LabelOptometry':'قياس النظر',
  'LabelPressure':'قياس ضغظ العين',

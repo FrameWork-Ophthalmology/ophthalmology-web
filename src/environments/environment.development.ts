@@ -9,5 +9,9 @@ export const environment = {
     API_DOCTOR: "/doctor/",
     API_CHECKSUM: "/checksum/",
     adressIP:"localhost",
+    
+    API_EXMANE: "/examen/",
+    
+    API_DMI: "/dmi/",
   };
   

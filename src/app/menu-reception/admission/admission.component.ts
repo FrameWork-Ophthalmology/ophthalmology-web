@@ -21,7 +21,7 @@ export class AdmissionComponent implements OnInit {
   codePatientNew = "";
   newNomFullAr = "";
   newNomFullLt = "";
-  newAge = "";
+  newAge: any ;  
   newGender = new Array<any>();
   selectedNewGender = null;
   numTelNew = "";
@@ -197,7 +197,8 @@ export class AdmissionComponent implements OnInit {
   }
   dateNaissance: any;
   transformDateFormatDateNaissance() {
-    this.dateNaissance = this.datePipe.transform(this.dateNaissance, "yyyy-MM-dd")
+    this.dateNaissance = this.datePipe.transform(this.dateNaissance, "yyyy-MM-dd");
+    this.calculateAge();
   };
 
   DateTempNewDateNaissance: any;
@@ -220,6 +221,23 @@ export class AdmissionComponent implements OnInit {
       if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
         this.dateNaissance = new Date(year, month, day);
       }
+    }
+    this.calculateAge();
+  }
+
+
+  calculateAge() {
+    if (this.dateNaissance) {
+      const birthDate = new Date(this.dateNaissance);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const month = today.getMonth() - birthDate.getMonth();
+      if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      this.newAge = age;
+    } else {
+      this.newAge = ""; // Or some default value if dateNaissance is empty
     }
   }
 

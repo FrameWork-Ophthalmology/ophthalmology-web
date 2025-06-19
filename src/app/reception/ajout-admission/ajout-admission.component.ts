@@ -10,12 +10,13 @@ import { ReceptionService } from '../ServiceClient/reception.service';
 import { ParametrageService } from '../../parametrage/ServiceClient/parametrage.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TabView } from 'primeng/tabview';
+import { CliniqueLabelPipe } from '../../Shared/Pipe/CliniqueLabelPipe';
 
 @Component({
   selector: 'app-ajout-admission',
   templateUrl: './ajout-admission.component.html',
   styleUrls: ['./ajout-admission.component.css', '.../../../src/assets/css/StyleApplication.css'],
-  providers: [ConfirmationService, MessageService, InputValidationService, CalanderTransService, ControlServiceAlertify]
+  providers: [ConfirmationService, MessageService, InputValidationService, CalanderTransService, ControlServiceAlertify,CliniqueLabelPipe]
 })
 export class AjoutAdmissionComponent implements OnInit   {
  
@@ -41,7 +42,7 @@ export class AjoutAdmissionComponent implements OnInit   {
   visibleModal = false;
   constructor(private fb: FormBuilder, private CtrlAlertify: ControlServiceAlertify, private calandTrans: CalanderTransService,
     private datePipe: DatePipe, private validationService: InputValidationService,
-    public i18nService: I18nService, private router: Router, private primengConfig: PrimeNGConfig,
+    public i18nService: I18nService, private router: Router, private primengConfig: PrimeNGConfig,private pipe:CliniqueLabelPipe,
     private cdr: ChangeDetectorRef, private recept_service: ReceptionService, private param_service: ParametrageService) {
     this.calandTrans.setLangAR();
 
@@ -185,7 +186,7 @@ export class AjoutAdmissionComponent implements OnInit   {
   codePatientSelected = '';
   newNomFullAr = '';
   newNomFullLt = '';
-  newAge = '';
+  newAge :any;
   numTelNew = '';
   refDoctorNew = '';
   selectedNewGender = null;
@@ -249,14 +250,14 @@ export class AjoutAdmissionComponent implements OnInit   {
       ]
       this.dateVisite = new Date();
       this.newTypeVisite = [
-        { label: this.i18nService.getString('LabelautoriseCons') || 'LabelautoriseCons', value: this.i18nService.getString('LabelautoriseCons') || 'LabelautoriseCons' },
-        { label: this.i18nService.getString('LabelControl') || 'LabelControl', value: this.i18nService.getString('LabelControl') || 'LabelControl' },
+        { label: this.i18nService.getString('LabelautoriseCons') || 'LabelautoriseCons', value: 1},
+        { label: this.i18nService.getString('LabelControl') || 'LabelControl', value: 2},
 
       ]
 
 
       this.ListRSLTClinique = [
-        { value: 'CLINIC TEST', label: 'CLINIC TEST' },
+        { value: '1', label: 'CLINIC TEST' },
       ]
       this.dataVisite = [
         { code: '1', dateVisite: this.datePipe.transform(this.dateVisite, "yyyy-MM-dd"), typeVisite: this.newTypeVisite[0].value  , currentClinique:''},
@@ -309,7 +310,7 @@ export class AjoutAdmissionComponent implements OnInit   {
   ProbMedicaux = "";
   selectedCliniqueReqOperation = null;
   selectedCliniqueOperation = null;
-  selectedCliniqueAdm = null;
+  selectedCliniqueAdm: number | null = null;
   selectedOperation = null;
   // selectedRSLTFundusRight :any;
   // selectedRSLTFundusLeft : any ;
@@ -435,6 +436,8 @@ export class AjoutAdmissionComponent implements OnInit   {
       }
     }
   }
+
+
 
   CloseModalRecherPatient() {
     this.visibleModalRecherPatient = false;
@@ -825,7 +828,9 @@ export class AjoutAdmissionComponent implements OnInit   {
 
   dateNaissance: any;
   transformDateFormatDateNaissance() {
-    this.dateNaissance = this.datePipe.transform(this.dateNaissance, "yyyy-MM-dd")
+    this.dateNaissance = this.datePipe.transform(this.dateNaissance, "yyyy-MM-dd");
+    this.calculateAge();
+
   };
 
   DateTempNewDateNaissance: any;
@@ -849,7 +854,40 @@ export class AjoutAdmissionComponent implements OnInit   {
         this.dateNaissance = new Date(year, month, day);
       }
     }
+    this.calculateAge();
   }
+
+  
+  calculateAge() {
+    if (this.dateNaissance) {
+      const birthDate = new Date(this.dateNaissance);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const month = today.getMonth() - birthDate.getMonth();
+      if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      this.newAge = age;
+    } else {
+      this.newAge = ""; // Or some default value if dateNaissance is empty
+    }
+  }
+
+  setDateFromAge(age: number) {
+    const today = new Date();
+    const birthYear = today.getFullYear() - age;
+    this.dateNaissance = new Date(birthYear, today.getMonth(), today.getDate());  // Month is 0-indexed
+    this.dateNaissance = this.datePipe.transform(this.dateNaissance, "yyyy-MM-dd"); //update format
+  }
+  onAgeChange() {
+    if (this.newAge !== null && this.newAge !== undefined) {
+      this.setDateFromAge(this.newAge);
+    } else {
+      this.dateNaissance = null;  // Clear the date if age is cleared
+    }
+  }
+
+
 
   DateTempNewDateVisite: any;
   formatInputNewDateVisite(event: any) {  // Use any because of p-calendar event type
@@ -887,6 +925,10 @@ export class AjoutAdmissionComponent implements OnInit   {
     this.dataVisite.push(newRow);
   }
 
+
+  SetCurrentCliniqueVisite(index: number){
+
+  }
   openModal(mode: string, index: number) {
     // this.SelectedPatientFromList= '';
     this.codePatientSelected == "";
@@ -926,6 +968,7 @@ export class AjoutAdmissionComponent implements OnInit   {
 
 
       const isValid = this.validateAdmissionData(index);
+      // const currentCliniqueSelected = ;
       if (isValid) {
         this.visibleModalNewAdmission = true;
 
@@ -937,8 +980,12 @@ export class AjoutAdmissionComponent implements OnInit   {
         this.LabelCorneal = this.i18nService.getString('LabelCorneal');
         this.LabelOperation = this.i18nService.getString('Operation');
         this.LabelDiagnosis = this.i18nService.getString('diagnosis');
-        this.selectedCliniqueAdm = this.selectedCliniqueCurrent;
+        this.ListRSLTClinique = [
+          { value: '1', label: 'CLINIC TEST' },
+        ]
+        this.selectedCliniqueAdm = this.SetDataCliniqueCurrent(index);
 
+ 
         this.ListRSLTFundus = [
           { value: '1', label: 'Positive' },
           { value: '2', label: 'Negative' },
@@ -953,9 +1000,7 @@ export class AjoutAdmissionComponent implements OnInit   {
           { value: '1', label: 'OPERATION TEST' },
         ]
 
-        this.ListRSLTClinique = [
-          { value: '1', label: 'CLINIC TEST' },
-        ]
+        
         this.columnsTabCorneal();
         this.onRowUnselect(event);
         this.clearSelected();
@@ -972,9 +1017,7 @@ export class AjoutAdmissionComponent implements OnInit   {
 
 
         this.code == undefined;
-
-
-        this.selectedCliniqueAdm = null;
+ 
 
 
         this.commentLeftEye = '';
@@ -1068,6 +1111,19 @@ export class AjoutAdmissionComponent implements OnInit   {
       return rowData.dateVisite && rowData.typeVisite && rowData.currentClinique; // Ensure all required fields are filled
     }
     return false; //Invalid index
+  }
+
+
+  SetDataCliniqueCurrent(index:number): number {
+    let curentClinique = 0; // Default value if not set; 
+    if (index >= 0 && index < this.dataVisite.length) {
+      const rowData = this.dataVisite[index];
+
+      // console.log("rowData.currentClinique" , rowData.currentClinique);
+      curentClinique=  rowData.currentClinique;
+      return  rowData.currentClinique; // Ensure all required fields are filled
+    }
+    return curentClinique;
   }
   removeRow(index: number) {
     if (index !== 0) {
