@@ -7799,3 +7799,7 @@ style attribute {
         user-select: none;
     }
 }
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message {
+    justify-self: center;
+}

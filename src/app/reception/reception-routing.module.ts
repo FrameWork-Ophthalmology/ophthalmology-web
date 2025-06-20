@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ReceptionComponent } from './reception.component';
 import { AjoutAdmissionComponent } from './ajout-admission/ajout-admission.component';
 import { I18nService } from '../Shared/i18n/i18n.service';
+import { PlanningMedecinComponent } from './planning-medecin/planning-medecin.component';
 
 const routes: Routes = [
   { path: '', component: ReceptionComponent }
@@ -10,7 +11,11 @@ const routes: Routes = [
     path: 'ouvrir_admission',
     component: AjoutAdmissionComponent,
     data: { title: 'NewFile', icon: 'fas fa-file-medical' }
-  }
+  },{
+    path: 'planning_medecin',
+    component: PlanningMedecinComponent,
+    data:{title:'PlanningMedcin' , icon :'bx bxs-spreadsheet'}
+  },
 
 
 ];

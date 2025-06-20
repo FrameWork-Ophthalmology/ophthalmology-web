@@ -161,6 +161,7 @@ tr.mat-footer-row {
     /* padding: 5px 15px 0px; */
     margin-bottom: 3px;
     border: 1px solid #adadad;
+    justify-content: center;
 }
 
 .recherche-zone {
@@ -175,6 +176,7 @@ tr.mat-footer-row {
     padding: 3px 6px 0px;
     margin-bottom: 3px;
     border: 1px solid #adadad;
+    justify-content: center;
 }
 
 
@@ -250,6 +252,14 @@ tr.mat-footer-row {
     /* border-radius: 6px; */
 }
 
+:host ::ng-deep .p-datatable-wrapper {
+    overflow: visible !important;
+}
+
+:host ::ng-deep .ModalAddFacture {
+    margin-top: 10px;
+}
+
 
 /* /// button ajout et modif et suppri  */
 
@@ -280,7 +290,7 @@ tr.mat-footer-row {
 .Bouton_new3 {
     margin-right: 5px;
     display: flex;
-    height: 55px;
+    height: 50px;
     width: 130px;
     padding: 3px 3px 0px 5px;
     margin-bottom: 3px;
@@ -288,6 +298,7 @@ tr.mat-footer-row {
     align-items: center;
     flex-direction: column;
     background: white;
+    justify-content: center;
 }
 
 .Bouton_new3Rechercher {
@@ -1614,7 +1625,7 @@ label:hover input[type=checkbox].checkbox:checked+span:before {
 
 :host ::ng-deep .p-datatable-scrollable .p-datatable-wrapper {
     position: static;
-    overflow: auto;
+    overflow: visible;
 }
 
 .drop-control {

@@ -8,9 +8,11 @@ import { I18nService } from '../../Shared/i18n/i18n.service';
 import { Router } from '@angular/router';
 import { ReceptionService } from '../ServiceClient/reception.service';
 import { ParametrageService } from '../../parametrage/ServiceClient/parametrage.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { TabView } from 'primeng/tabview';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'; 
 import { CliniqueLabelPipe } from '../../Shared/Pipe/CliniqueLabelPipe';
+import { catchError, firstValueFrom, map, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { EncryptionService } from '../../Shared/EcrypteService/EncryptionService';
 
 @Component({
   selector: 'app-ajout-admission',
@@ -41,9 +43,9 @@ export class AjoutAdmissionComponent implements OnInit   {
   visibleModalAddAdmissionOperation = false;
   visibleModal = false;
   constructor(private fb: FormBuilder, private CtrlAlertify: ControlServiceAlertify, private calandTrans: CalanderTransService,
-    private datePipe: DatePipe, private validationService: InputValidationService,
+    private datePipe: DatePipe ,
     public i18nService: I18nService, private router: Router, private primengConfig: PrimeNGConfig,private pipe:CliniqueLabelPipe,
-    private cdr: ChangeDetectorRef, private recept_service: ReceptionService, private param_service: ParametrageService) {
+    private encryptionService: EncryptionService, private recept_service: ReceptionService, private param_service: ParametrageService) {
     this.calandTrans.setLangAR();
 
 
@@ -261,7 +263,7 @@ export class AjoutAdmissionComponent implements OnInit   {
         { value: '1', label: 'CLINIC TEST' },
       ]
       this.dataVisite = [
-        { code: '1', dateVisite: this.datePipe.transform(this.dateVisite, "yyyy-MM-dd"), typeVisite: this.newTypeVisite[0].value  , currentClinique:''},
+        { code: '1', dateVisite: this.datePipe.transform(this.dateVisite, "yyyy-MM-dd"), typeVisite: this.newTypeVisite[0].value   },
       ]
 
       this.dataPatient = [
@@ -448,6 +450,7 @@ export class AjoutAdmissionComponent implements OnInit   {
     this.dateNaissanceAdm = new Date();
     this.dateNaissanceNew = new Date();
     this.dateNaissanceRecherche = new Date();
+    this.visibleModalAdmission = false;
   }
 
 
@@ -714,6 +717,8 @@ export class AjoutAdmissionComponent implements OnInit   {
     this.codePatientSelected = '';
     this.nomFullArSelected = '';
     this.SelectedPatientFromList = null;
+    this.ListMedecinTried = new Array<any>();
+    this.visibleModalAdmission = false;
 
   }
 
@@ -743,6 +748,7 @@ export class AjoutAdmissionComponent implements OnInit   {
     this.nomFullLtNew = '';
     this.TelPatientNew = '';
     this.codePatientNew = '';
+    this.visibleModalAdmission = false;
   }
   transformDateFormat() {
     this.dateNaissanceNew = this.datePipe.transform(this.dateNaissanceNew, "yyyy-MM-dd")
@@ -920,24 +926,26 @@ export class AjoutAdmissionComponent implements OnInit   {
     const newRow: any = {
       code: this.dataVisite.length + 1, // Assign a new code (adjust as needed)
       dateVisite: '',         // Set default date to today
-      typeVisite: '',                    // Initialize typeVisite (will be updated by the dropdown)
-      currentClinique: '',                    // Initialize typeVisite (will be updated by the dropdown)
+      typeVisite: '',                    // Initialize typeVisite (will be updated by the dropdown) 
     };
     this.dataVisite.push(newRow);
   }
 
 
-  SetCurrentCliniqueVisite(index: number){
+  // SetCurrentCliniqueVisite(index: number){
 
-  }
+  // }
   openModal(mode: string, index: number) {
     // this.SelectedPatientFromList= '';
+
+    const sessionValue = sessionStorage.getItem("CheckRegDef");
+    const checkedRegDef = sessionValue === "true";
     this.codePatientSelected == "";
     this.nomFullArSelected == "";
     this.selectedVisiteRowIndex = index;
     this.visibleModalNewAdmission = false;
     this.visibleModalRecherPatient = false;
-
+    this.visibleModalAdmission = false;
     const button = document.createElement('button');
     button.type = 'button';
     button.style.display = 'none';
@@ -951,11 +959,12 @@ export class AjoutAdmissionComponent implements OnInit   {
       // Patient selected from the list
       this.CodePatientAdm = this.SelectedPatientFromList.codePatient;
       this.nomFullArAdm = this.SelectedPatientFromList.nomFullAr;
+      this.TelPatientAdm = this.SelectedPatientFromList.numTel
     } else if (this.codePatientNew && this.newNomFullAr) {
       // Patient data entered manually
       this.CodePatientAdm = this.codePatientNew;
       this.nomFullArAdm = this.newNomFullAr;
-
+      this.TelPatientAdm  = this.numTelNew;
 
     } else {
       // No patient selected or data entered
@@ -971,121 +980,161 @@ export class AjoutAdmissionComponent implements OnInit   {
       const isValid = this.validateAdmissionData(index);
       // const currentCliniqueSelected = ;
       if (isValid) {
-        this.visibleModalNewAdmission = true;
+        // this.visibleModalNewAdmission = true;
 
-        button.setAttribute('data-target', '#ModalAddAdmission');
-        this.formHeader = this.i18nService.getString('NewFile');
-        this.LabelOptometry = this.i18nService.getString('LabelOptometry');
-        this.LabelPressure = this.i18nService.getString('LabelPressure');
-        this.LabelFundus = this.i18nService.getString('LabelFundus');
-        this.LabelCorneal = this.i18nService.getString('LabelCorneal');
-        this.LabelOperation = this.i18nService.getString('Operation');
-        this.LabelDiagnosis = this.i18nService.getString('diagnosis');
-        this.ListRSLTClinique = [
-          { value: '1', label: 'CLINIC TEST' },
-        ]
-        this.selectedCliniqueAdm = this.SetDataCliniqueCurrent(index);
+        // button.setAttribute('data-target', '#ModalAddAdmission');
+        // this.formHeader = this.i18nService.getString('NewFile');
+        // this.LabelOptometry = this.i18nService.getString('LabelOptometry');
+        // this.LabelPressure = this.i18nService.getString('LabelPressure');
+        // this.LabelFundus = this.i18nService.getString('LabelFundus');
+        // this.LabelCorneal = this.i18nService.getString('LabelCorneal');
+        // this.LabelOperation = this.i18nService.getString('Operation');
+        // this.LabelDiagnosis = this.i18nService.getString('diagnosis');
+        // this.ListRSLTClinique = [
+        //   { value: '1', label: 'CLINIC TEST' },
+        // ]
+        // this.selectedCliniqueAdm = this.SetDataCliniqueCurrent(index);
 
  
-        this.ListRSLTFundus = [
-          { value: '1', label: 'Positive' },
-          { value: '2', label: 'Negative' },
-        ]
+        // this.ListRSLTFundus = [
+        //   { value: '1', label: 'Positive' },
+        //   { value: '2', label: 'Negative' },
+        // ]
 
-        this.dataCorneal = [
-          { eye: 'OD ( اليمنى )', K1: '', K2: '', Axis: '', commentaire: '' },
-          { eye: 'OS ( اليسرى )', K1: '', K2: '', Axis: '', commentaire: '' },]
+        // this.dataCorneal = [
+        //   { eye: 'OD ( اليمنى )', K1: '', K2: '', Axis: '', commentaire: '' },
+        //   { eye: 'OS ( اليسرى )', K1: '', K2: '', Axis: '', commentaire: '' },]
 
 
-        this.ListRSLTOperation = [
-          { value: '1', label: 'OPERATION TEST' },
-        ]
+        // this.ListRSLTOperation = [
+        //   { value: '1', label: 'OPERATION TEST' },
+        // ]
 
         
-        this.columnsTabCorneal();
-        this.onRowUnselect(event);
-        this.clearSelected();
+        // this.columnsTabCorneal();
+        // this.onRowUnselect(event);
+        // this.clearSelected();
 
-        this.visibleModalNewAdmission = true;
-        this.visibleModalAddPatient = false;
-        sessionStorage.setItem("CodePatientTemp", this.SelectedPatientFromList);
-        this.visibleModalRecherPatient = false;
-        this.getCodeSaisieAdmissionOPD();
-
-
+        // this.visibleModalNewAdmission = true;
+        // this.visibleModalAddPatient = false;
+        // sessionStorage.setItem("CodePatientTemp", this.SelectedPatientFromList);
+        // this.visibleModalRecherPatient = false;
+        // this.getCodeSaisieAdmissionOPD();
 
 
 
 
-        this.code == undefined;
+
+
+        // this.code == undefined;
  
 
 
-        this.commentLeftEye = '';
-        this.commentLeftEyeFundus = '';
-        this.commentRightEye = '';
-        this.commentRightEyeFundus = '';
-        this.rightEye = '';
-        this.leftEye = '';
-        this.rightEyePressure = '';
-        this.leftEyePressure = '';
-        this.selectedRSLTFundusRight = { label: '' };
-        this.selectedRSLTFundusLeft = { label: '' };
-        this.selectedCliniqueReqOperation = null;
-        this.selectedOperation = null;
-        this.prixMoyeneOperation = '';
+        // this.commentLeftEye = '';
+        // this.commentLeftEyeFundus = '';
+        // this.commentRightEye = '';
+        // this.commentRightEyeFundus = '';
+        // this.rightEye = '';
+        // this.leftEye = '';
+        // this.rightEyePressure = '';
+        // this.leftEyePressure = '';
+        // this.selectedRSLTFundusRight = { label: '' };
+        // this.selectedRSLTFundusLeft = { label: '' };
+        // this.selectedCliniqueReqOperation = null;
+        // this.selectedOperation = null;
+        // this.prixMoyeneOperation = '';
 
 
-        this.dataCorneal = [
-          { eye: 'OD ( اليمنى )', K1: '', K2: '', Axis: '', commentaire: '' },
-          { eye: 'OS ( اليسرى )', K1: '', K2: '', Axis: '', commentaire: '' },]
-        this.formcommentLeftEye = this.fb.group({
-          text: ['', Validators.required] // Add validators as needed
-        });
+        // this.dataCorneal = [
+        //   { eye: 'OD ( اليمنى )', K1: '', K2: '', Axis: '', commentaire: '' },
+        //   { eye: 'OS ( اليسرى )', K1: '', K2: '', Axis: '', commentaire: '' },]
+        // this.formcommentLeftEye = this.fb.group({
+        //   text: ['', Validators.required] // Add validators as needed
+        // });
 
-        this.formcommentRightEye = this.fb.group({
-          text: ['', Validators.required] // Add validators as needed
-        });
+        // this.formcommentRightEye = this.fb.group({
+        //   text: ['', Validators.required] // Add validators as needed
+        // });
 
-        this.formcommentLeftEyeFundus = this.fb.group({
-          text: ['', Validators.required] // Add validators as needed
-        });
+        // this.formcommentLeftEyeFundus = this.fb.group({
+        //   text: ['', Validators.required] // Add validators as needed
+        // });
 
-        this.formcommentRightEyeFundus = this.fb.group({
-          text: ['', Validators.required] // Add validators as needed
-        });
-
-
-        this.formFundusOperation = this.fb.group({
-          text: ['', Validators.required] // Add validators as needed
-        });
+        // this.formcommentRightEyeFundus = this.fb.group({
+        //   text: ['', Validators.required] // Add validators as needed
+        // });
 
 
-        this.formOptometryOperation = this.fb.group({
-          text: ['', Validators.required] // Add validators as needed
-        });
+        // this.formFundusOperation = this.fb.group({
+        //   text: ['', Validators.required] // Add validators as needed
+        // });
 
 
-        this.formPressureOperation = this.fb.group({
-          text: ['', Validators.required] // Add validators as needed
-        });
+        // this.formOptometryOperation = this.fb.group({
+        //   text: ['', Validators.required] // Add validators as needed
+        // });
 
-        this.formCornealOperation = this.fb.group({
-          text: ['', Validators.required] // Add validators as needed
-        });
 
-        this.formDiagnosis = this.fb.group({
-          text: ['', Validators.required] // Add validators as needed
-        });
-        this.formchiefComplaint = this.fb.group({
-          text: ['', Validators.required] // Add validators as needed
-        });
+        // this.formPressureOperation = this.fb.group({
+        //   text: ['', Validators.required] // Add validators as needed
+        // });
 
-        this.formPastHistory = this.fb.group({
-          text: ['', Validators.required] // Add validators as needed
-        }); this.formReasonVisite = this.fb.group({
-          text: ['', Validators.required] // Add validators as needed
-        });
+        // this.formCornealOperation = this.fb.group({
+        //   text: ['', Validators.required] // Add validators as needed
+        // });
+
+        // this.formDiagnosis = this.fb.group({
+        //   text: ['', Validators.required] // Add validators as needed
+        // });
+        // this.formchiefComplaint = this.fb.group({
+        //   text: ['', Validators.required] // Add validators as needed
+        // });
+
+        // this.formPastHistory = this.fb.group({
+        //   text: ['', Validators.required] // Add validators as needed
+        // }); this.formReasonVisite = this.fb.group({
+        //   text: ['', Validators.required] // Add validators as needed
+        // });
+
+
+
+        this.visibleModalAdmission = true;
+        this.LabelRegDefferral = this.i18nService.getString('LabelRegDefferral');
+     this.columnsListMedecin(); 
+
+     this.selectedValue = 1;
+
+     button.setAttribute('data-target', '#Modal');
+     this.formHeader = this.i18nService.getString('Add');
+     this.onRowUnselect(event);
+     this.clearSelected();
+
+    //  if (this.codeConvention == 'NULL' && this.codeSociete == 'NULL') {
+    //    this.selectedValue == 1;
+    //    this.codePriceList = 200;
+    //    this.codeConvention = "NULL";
+    //    this.codeSociete = "NULL";
+    //  } else {
+    //    this.codePriceList = this.codePriceList;
+    //    this.selectedConvention = this.codeConvention;
+    //    this.selectedSociete = this.codeSociete;
+    //    this.selectedValue == 2;
+    //  }
+     sessionStorage.setItem("CodePatientTemp", this.SelectedPatientFromList);
+     this.visibleModalRecherPatient = false;
+     this.getCodeSaisieAdmissionOPD();
+
+
+
+     this.RegDeferral = checkedRegDef;
+     this.visibleModal = true;
+     this.GetAllMedecinContientConsultation();
+     if (sessionStorage.getItem("CheckRegDef") == "false") {
+       this.GetAllModeReglement();
+     }
+
+
+     this.code == undefined;
 
 
 
@@ -1109,23 +1158,23 @@ export class AjoutAdmissionComponent implements OnInit   {
   validateAdmissionData(index: number): boolean {
     if (index >= 0 && index < this.dataVisite.length) {
       const rowData = this.dataVisite[index];
-      return rowData.dateVisite && rowData.typeVisite && rowData.currentClinique; // Ensure all required fields are filled
+      return rowData.dateVisite && rowData.typeVisite  ; // Ensure all required fields are filled
     }
     return false; //Invalid index
   }
 
 
-  SetDataCliniqueCurrent(index:number): number {
-    let curentClinique = 0; // Default value if not set; 
-    if (index >= 0 && index < this.dataVisite.length) {
-      const rowData = this.dataVisite[index];
+  // SetDataCliniqueCurrent(index:number): number {
+  //   let curentClinique = 0; // Default value if not set; 
+  //   if (index >= 0 && index < this.dataVisite.length) {
+  //     const rowData = this.dataVisite[index];
 
-      // console.log("rowData.currentClinique" , rowData.currentClinique);
-      curentClinique=  rowData.currentClinique;
-      return  rowData.currentClinique; // Ensure all required fields are filled
-    }
-    return curentClinique;
-  }
+  //     // console.log("rowData.currentClinique" , rowData.currentClinique);
+  //     curentClinique=  rowData.currentClinique;
+  //     return  rowData.currentClinique; // Ensure all required fields are filled
+  //   }
+  //   return curentClinique;
+  // }
   removeRow(index: number) {
     if (index !== 0) {
       this.dataVisite.splice(index, 1);
@@ -1146,4 +1195,391 @@ export class AjoutAdmissionComponent implements OnInit   {
   }
 
   LabelDiagnosis = "";
+
+
+
+
+  //// modal admission
+  visibleModalAdmission =false;
+
+  RegDeferral = false;
+  RegDef = false;
+  LabelRegDefferral = "";
+  DisabledReg() {
+    if (this.RegDeferral === true) {
+      this.RegDef = true;
+    } else {
+      this.RegDef = false;
+      this.GetAllModeReglement();
+
+    }
+  }
+  dataModeRegelement = new Array<any>();
+  dataModeRegelementPushed = new Array<any>();
+  listModeReglementRslt = new Array<any>();
+  GetAllModeReglement() {
+    this.param_service.GetModeReglement().subscribe((data: any) => {
+      this.dataModeRegelement = data;
+      this.dataModeRegelementPushed = [];
+      for (let i = 0; i < this.dataModeRegelement.length; i++) {
+        this.dataModeRegelementPushed.push({ label: this.dataModeRegelement[i].codeSaisie + " || " + this.dataModeRegelement[i].designationAr, value: this.dataModeRegelement[i].code })
+      }
+      this.listModeReglementRslt = this.dataModeRegelementPushed;
+    })
+  }
+
+  selectedValue: any = 0;
+  selectedValueNew: any = 0;
+  visbileModalPassword = false;
+  decryptedValue: string = '';
+  VisiblePEC    = false;
+  OpenmodalPassword(mode: string) {
+    this.visibleModalAdmission = false; 
+    this.visibleModalAddPatient = false;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    if (mode === 'passwordModal') {
+
+
+
+
+      button.setAttribute('data-target', '#ModalPassword');
+      this.formHeader = this.i18nService.getString('Password');
+      this.visibleModalRecherPatient = false;
+      this.visibleModalAdmission = true;
+      this.visibleModalAddPatient = false; 
+      this.visbileModalPassword = true;
+
+    }
+
+
+
+
+  }
+
+  selectedSociete: any = null;
+  dataSociete = new Array<any>();
+  listSocietePushed = new Array<any>();
+  ListSocieteRslt= new Array<any>();
+  GetSociete() {
+    this.param_service.GetSocieteActif().subscribe((data: any) => {
+      this.dataSociete = data;
+      this.listSocietePushed = [];
+      for (let i = 0; i < this.dataSociete.length; i++) {
+        this.listSocietePushed.push({ label: this.dataSociete[i].designationAr, value: this.dataSociete[i].code })
+      }
+      this.ListSocieteRslt = this.listSocietePushed;
+    })
+  }
+
+  
+  columnTabsListMedecin!: any[];
+  columnsListMedecin() {
+    this.columnTabsListMedecin = [
+
+      // { field: '', header: '' },
+      { field: 'codeMedecin', header: this.i18nService.getString('CodeMedecin') },
+      { field: 'NomFullArMedecin', header: this.i18nService.getString('NomFullAr') },
+      { field: 'NomFullLtMedecin', header: this.i18nService.getString('NomFullLt') },
+      { field: 'specialite_medecin', header: this.i18nService.getString('SpecialiteMedecin') },
+      { field: 'Cabinet', header: this.i18nService.getString('CabinetDesgiantion') },
+      { field: 'montantConsultation', header: this.i18nService.getString('montantConsultation') }
+
+    ];
+
+
+  }
+  
+  sumMontantFromDetails(details: any[]): number {
+    if (!details || !Array.isArray(details) || details.length === 0) {
+      return 0;
+    }
+    if (!this.selectedConvention && this.selectedValue == 2) {
+      return 0; //Condition met, return 0
+    } else {
+      return details.reduce((sum, detail) => sum + (detail.montant || 0), 0);
+    }
+  }
+  codeConvention: any = null;
+  ListMedecinTried = new Array<any>();
+  selectedConvention: any = null;
+  async GetAllMedecinContientConsultation() {
+    try {
+      const currentDate = new Date();
+      const formattedDate = this.datePipe.transform(currentDate, "yyyy-MM-dd");
+      const natureAdmOPD = sessionStorage.getItem("NatureAdmissionOPD");
+      const codeNatAdmOPD = Number(natureAdmOPD);
+
+      // Fetch codeConvention and PriceListCash concurrently
+      const [planningCabinets, priceListCashResult] = await Promise.all([
+        this.recept_service.GetPlanningCabinetByDateExiste(formattedDate, formattedDate).toPromise(), // toPromise() for async/await
+        // this.param_service.GetParam("codeConvention").toPromise(), // Assuming you have a method to fetch codeConvention
+
+        this.param_service.GetParam("PriceListCash").toPromise(),
+      ]);
+
+      this.codeConvention = this.selectedConvention; // Assign the results
+      const priceListCashValue = priceListCashResult.valeur; // Assuming the value is in 'valeur' property
+
+      if (planningCabinets.length === 0) {
+        this.CtrlAlertify.PostionLabelNotification();
+        this.CtrlAlertify.showNotificationِCustom("NoPlanningInThisDay");
+        this.ListMedecinTried = [];
+        return;
+      }
+
+      const consultationData = await this.fetchConsultationData(planningCabinets, codeNatAdmOPD, priceListCashValue);
+
+      this.ListMedecinTried = consultationData;
+      if (this.ListMedecinTried.length === 0) {
+        console.log("No médecins found with consultations");
+      }
+
+    } catch (error) {
+      console.error("Error fetching médecin data:", error);
+      // Handle errors appropriately (e.g., display an error message to the user)
+    }
+  }
+  
+  //Helper Function to improve readability and maintainability.
+  async fetchConsultationData(planningCabinets: any[], codeNatAdmOPD: number, priceListCashValue: any) {
+    const requests = planningCabinets.map(medecin =>
+      this.param_service.GetPrestationConsultationByCodeMedecinAndCodeNatureAdmission(medecin.codeMedecin, codeNatAdmOPD)
+        .pipe(
+          map((datax: any) => ({ medecin, codePrestation: datax.codePrestation }))
+        )
+    );
+
+    const consultationData = await Promise.all(requests.map(obs => firstValueFrom(obs)));
+
+
+    const priceRequests = consultationData.map(({ medecin, codePrestation }) => {
+      if (this.codeConvention) {
+        sessionStorage.setItem("PriceListTempSelectedTemp", this.selctedPriceListConvention);
+        return this.param_service.GetDetailsPriceListByCodePriceListAndCodePrestationAnd(this.selctedPriceListConvention, codePrestation, codeNatAdmOPD)
+          .pipe(
+            map((dataDetailsCouverture: any) => ({
+              ...medecin,
+              // montantConsultation: dataDetailsCouverture.montantPEC
+              montantConsultation: this.sumMontantFromDetails(dataDetailsCouverture)
+            }))
+          );
+
+      } else {
+        sessionStorage.setItem("PriceListTempSelectedTemp", priceListCashValue);
+        return this.param_service.GetDetailsPriceListByCodePriceListAndCodePrestationAnd(priceListCashValue, medecin.medecinDTO.prestationConsultationDTO.codePrestation, codeNatAdmOPD)
+          .pipe(
+            catchError((error: HttpErrorResponse) => {
+              console.error('Error :', error);
+              return throwError(() => new Error('Failed to Get Prestation.'));
+            }),
+            map((dataDetailsPL: any) => (
+
+              {
+                ...medecin,
+                montantConsultation: this.sumMontantFromDetails(dataDetailsPL) || 0
+              }
+
+            ))
+          );
+      }
+    });
+
+    return Promise.all(priceRequests.map(obs => firstValueFrom(obs)));
+  }
+
+  selctedPriceListConvention: any;
+  GetDetailsConventionSelected() {
+
+    this.param_service.GetConventionByCode(this.selectedConvention).subscribe((date: any) => {
+      this.selctedPriceListConvention = date.codePriceList;
+      sessionStorage.setItem("ListCouvertureTemp", date.codeListCouverture);
+
+    }
+
+    );
+    this.GetAllMedecinContientConsultation();
+
+  }
+
+  ListConventionRslt = new Array<any>();
+  dataConvention = new Array<any>();
+  listConventionPushed: any;
+  GetListConventionFromSociete(codeSociet: number) {
+    this.selectedConvention = "";
+    this.param_service.GetConventionByCodeSociete(codeSociet).subscribe((data: any) => {
+      this.dataConvention = data;
+      this.listConventionPushed = [];
+      for (let i = 0; i < this.dataConvention.length; i++) {
+        this.listConventionPushed.push({ label: this.dataConvention[i].designationAr, value: this.dataConvention[i].code })
+      }
+      this.ListConventionRslt = this.listConventionPushed;
+    })
+
+
+
+  }
+  Total: number = 0;
+  SelectedPatients: any;
+  SelectedMedecinFromList: any;
+  onRowUnselectFromTabsMedecin(event: any) {
+    this.SelectedPatients = null;
+    this.Total = 0;
+
+
+  }
+
+  mntCash: any = 0;
+  mntPEC: any = 0;
+  mntReqPayed: any = 0;
+  mntPayed: any = 0;
+  onRowSelectFromTabsMedecin(event: any) {
+
+    if (this.selectedValue == 2 && this.selectedConvention == null || this.selectedValue == 2 && this.selectedSociete == null) {
+
+
+      this.CtrlAlertify.showNotificationِCustom('selctedAnyConventionOrSociete')
+      this.CtrlAlertify.PostionLabelNotification();
+
+    } else {
+
+      if (this.selectedValue == 1) {
+        this.mntCash = event.data.montantConsultation;
+        this.mntPEC = 0;
+        this.mntReqPayed = event.data.montantConsultation;
+        this.mntPayed = event.data.montantConsultation;
+        console.log("SelectedMedecinFromList  ", this.SelectedMedecinFromList)
+      } else {
+
+        if (this.selectedConvention == "" || this.selectedConvention == undefined || this.selectedConvention == null) {
+
+          this.CtrlAlertify.showNotificationِCustom('selctedAnyConventionOrSociete')
+          this.CtrlAlertify.PostionLabelNotification();
+        } else {
+          const conventionSelected = this.dataConvention.find(m => m.code === this.selectedConvention);
+
+          const codeNatureAdmissionOPd = sessionStorage.getItem("NatureAdmissionOPD");
+          this.param_service.GetDetailsListCouverturePrestationByCodeListCouvertureAndCodePrestationAndCodeNatureAdmission(conventionSelected.codeListCouverture, this.SelectedMedecinFromList.medecinDTO.prestationConsultationDTO.codePrestation, codeNatureAdmissionOPd).subscribe(
+            (data: any) => {
+              console.log("data couverure", data);
+              console.log("SelectedMedecinFromList  ", this.SelectedMedecinFromList)
+              this.mntCash = data.montantPatient;
+              this.mntPEC = data.montantPEC;
+              this.mntReqPayed = data.montantPatient;
+              this.mntPayed = data.montantPatient;
+
+            })
+        }
+
+        // GetDataFromConventionEtListCouverture
+
+
+      }
+
+
+
+
+
+
+      console.log("Ok medecin", event.data);
+    }
+
+
+
+
+  }
+
+  first = 0;
+  DisBanque: boolean = true;
+  DisCaisse: boolean = true;
+  selectedBanque: any = null;
+  numPiece: any = null;
+  selectedModeReglement: any;
+  GetBanqueIfNeed() {
+    const modRegSelected = this.dataModeRegelement.find(m => m.code === this.selectedModeReglement);
+
+    if (modRegSelected.reqBanque == false) {
+      this.DisBanque = true;
+      this.selectedBanque = null;
+      this.numPiece = '';
+
+    } else {
+      this.DisBanque = false;
+      this.DisCaisse = true;
+      this.GetAllBanque();
+      // this.selectedCaisse = null;
+    }
+
+
+  }
+  
+  dataBanque = new Array<any>();
+  dataBanquePushed: any[] = [];
+  listBanqueRslt = new Array<any>();
+  GetAllBanque() {
+    this.param_service.GetBanque().subscribe((data: any[]) => {
+      this.dataBanque = data;
+      this.dataBanquePushed = [];
+      for (let i = 0; i < this.dataBanque.length; i++) {
+        this.dataBanquePushed.push({ label: this.dataBanque[i].codeSaisie + " || " + this.dataBanque[i].designationAr, value: this.dataBanque[i].code })
+      }
+      this.listBanqueRslt = this.dataBanquePushed;
+
+      
+    })
+  }
+  password: any;
+  CloseModalPassWord() {
+    this.visbileModalPassword = false;
+  }
+
+  GetIfNeedSocForAddAdmission() {
+
+    const encryptedValue = sessionStorage.getItem('PassCashPEC');
+    if (encryptedValue) {
+
+      this.decryptedValue = this.encryptionService.decrypt(encryptedValue);
+
+    } else {
+      this.decryptedValue = 'No value found in session storage';
+    }
+    if (this.password != this.decryptedValue) {
+      this.CtrlAlertify.PostionLabelNotification();
+      this.CtrlAlertify.showNotificationِCustom("PasswordError");
+
+
+
+
+    } else {
+      this.password = "";
+
+      this.visbileModalPassword = false;
+      if (this.selectedValue === 1) {
+        this.selectedValue = 2
+        this.SelectedMedecinFromList = '';
+        this.mntCash = 0;
+        this.mntPEC = 0;
+        this.mntPayed = 0;
+        this.mntReqPayed = 0;
+        this.VisiblePEC = true;
+        sessionStorage.removeItem("PriceListTempSelectedTemp");
+        sessionStorage.removeItem("ListCouvertureTemp");
+        this.GetSociete();
+        this.GetAllMedecinContientConsultation();
+      } else {
+        this.selectedValue = 1;
+        this.VisiblePEC = false;
+        this.SelectedMedecinFromList = '';
+        this.selectedConvention = "";
+        this.selectedSociete = "";
+        this.GetAllMedecinContientConsultation();
+      }
+    }
+
+
+
+  }
+
 }

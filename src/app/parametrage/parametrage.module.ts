@@ -8,20 +8,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { I18nPipeForMenu } from '../Shared/i18n/i18nForMenu.pipe';
  
-import { TabViewModule } from 'primeng/tabview'; // Import TabViewModule 
-import { CliniqueComponent } from './clinique/clinique.component';
-import { OperationComponent } from './operation/operation.component';
-import { TypeOperationComponent } from './type-operation/type-operation.component';
-import { ListboxModule } from 'primeng/listbox';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TabViewModule } from 'primeng/tabview'; // Import TabViewModule  
+import { MatTabsModule } from '@angular/material/tabs'; 
+import { TabContentComponentParam } from './TabContentComponentMaint';
+import { MenuParamContentComponent } from './menu-maintenance-content.component';
 @NgModule({
   declarations: [
-    ParametrageComponent,I18nPipeForMenu, 
-    // CliniqueComponent,
-    // OperationComponent,
-    // TypeOperationComponent,
+    ParametrageComponent,I18nPipeForMenu, TabContentComponentParam,MenuParamContentComponent
+   
   ],
   imports: [
-    CommonModule,TagModule,MatIconModule,MatMenuModule,TabViewModule,
+    CommonModule,TagModule,MatIconModule,MatMenuModule,TabViewModule,MatTabsModule,
+    TabsModule,
     ParametrageRoutingModule
   ]
 })

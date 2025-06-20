@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
     <div class="row text-center">
         <h2 class="TitleMenu"> {{'Setting' | i18nForMenu:i18nService.currentLanguage}} </h2>
         <div id="menu-box">
@@ -13,18 +13,7 @@
 
                     </div>
                 </div>
-            </div>
-            <!-- <div id="item" class="col-sm-6 col-md-3 myDIV " [routerLink]="['/menu_parametrage/type_operation']">
-                <div class="container-block ">
-                    <div class="block1">
-                        <i class="fas fa-bars" style="font-size: 20px; margin-top: 8px;"> </i>
-                    </div>
-                    <div class="block2  ">
-                        <span class="FloatRight ">  {{'TypeOperation' | i18nForMenu:i18nService.currentLanguage}}  </span>
-
-                    </div>
-                </div>
-            </div> -->
+            </div> 
             <div id="item" class="col-sm-6 col-md-3 myDIV " [routerLink]="['/menu_parametrage/operation']">
                 <div class="container-block ">
                     <div class="block1">
@@ -41,4 +30,12 @@
 
         </div>
     </div>
+</div> -->
+
+<div (click)="$event.preventDefault()">
+    <tabset>
+        <tab *ngFor="let tab of tabs" [heading]="tab.displayName" [removable]="tab.removable" (removed)="removeTabHandler(tab)" [active]="tab.active">
+            <app-tab-content-param [component]="tab.component"></app-tab-content-param>
+        </tab>
+    </tabset>
 </div>

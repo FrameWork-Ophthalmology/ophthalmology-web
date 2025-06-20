@@ -96,6 +96,7 @@ import { FeuilleSoinComponent } from './menu-dmi/feuille-soin/feuille-soin.compo
 import { ListAdmissionOPDComponent } from './menu-dmi/list-admission-opd/list-admission-opd.component';
 import { RequestOPDComponent } from './menu-dmi/request-opd/request-opd.component';
 import { ResultatListComponent } from './NewCheckSum/resultat-list/resultat-list.component';
+import { PlanningMedecinComponent } from './reception/planning-medecin/planning-medecin.component';
 // import moment from 'moment';
 
 const languages = [
@@ -131,7 +132,7 @@ const languages = [
 
 
     ///// menu reception old 
-AjoutAdmissionComponent,
+AjoutAdmissionComponent,PlanningMedecinComponent,
 
 
    ///// menu reception 
