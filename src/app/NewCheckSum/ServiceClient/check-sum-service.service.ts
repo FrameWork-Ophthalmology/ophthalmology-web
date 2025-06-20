@@ -9,8 +9,8 @@ import { TomeyResult } from '../services/result.service';
 })
 export class CheckSumServiceService {
   constructor(private http: HttpClient) { }
-  public readonly resultsUrl = `${environment.New_API_CheckSum}/results`;
-  public readonly subscribeUrl = `${environment.New_API_CheckSum}/subscribe`;
+  public readonly resultsUrl = `${environment.New_API_CheckSum}results`;
+  public readonly subscribeUrl = `${environment.New_API_CheckSum}subscribe`;
 
   GetResultat(): Observable<TomeyResult[]> {
     return this.http.get<TomeyResult[]>(this.resultsUrl);
